@@ -28,11 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CodeBarScannerTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
-                    Greeting()
-
-                }
+                    App()
             }
         }
     }
@@ -40,11 +36,11 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun Greeting() {
+fun App() {
     val context = LocalContext.current
 
     Scaffold(
-        topBar = { AppBar() }
+        topBar = { AppBar(title = stringResource(id= R.string.app_name)) }
     ){
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -69,11 +65,3 @@ fun Greeting() {
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CodeBarScannerTheme {
-        Greeting()
-    }
-}

@@ -3,4 +3,20 @@
     <string name="settings_action">Settings</string>
     <string name="scan_single_button">Single Scan</string>
     <string name="cam_permission_fail">Need Camera Permission</string>
+
+    <!-- Settings Screen !-->
+    <string name="settings_title">Settings</string>
+    <string name="settings_host_url">Address</string>
+    <string name="settings_host_username">Username</string>
+    <string name="settings_host_password">Password</string>
+    <string name="settings_header_auth">Header Auth</string>
+
+    <!-- Buttons !-->
+    <string name="save_button">Save</string>
+    <string name="back_button">Go Back</string>
+
+    <!--  Files !-->
+    <string name="file_settings">Settings.json</string>
+
+
 </resources>

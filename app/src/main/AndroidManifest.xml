@@ -25,9 +25,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.screens.CameraActivity">
-
-        </activity>
+        <activity android:name=".ui.screens.CameraActivity"/>
+        <activity android:name=".ui.screens.SettingsActivity"/>
 
     </application>
 

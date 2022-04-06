@@ -1,31 +1,59 @@
 package com.idir.codebarscanner.ui.components
 
-import android.graphics.drawable.Icon
-import androidx.annotation.DrawableRes
+import android.app.Activity
+import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.sharp.ArrowBack
 import androidx.compose.material.icons.sharp.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.idir.codebarscanner.R
+import com.idir.codebarscanner.ui.screens.SettingsActivity
 
 @Composable
-fun AppBar(){
+fun AppBar(
+    title : String,
+){
+    val context = LocalContext.current
+
     TopAppBar(
-        title = { Text(text = stringResource(id= R.string.app_name))} ,
+        title = { Text(text = title)} ,
         backgroundColor = Color.Cyan,
         actions = {
-            AppBarIcon(appBarAction = AppBarAction.Settings , action = {
-
-            })
+                AppBarIcon(appBarAction = AppBarAction.Settings, action = {
+                    context.startActivity(Intent(context, SettingsActivity::class.java))
+                })
         }
+    )
+}
+
+
+@Composable
+fun SecondaryAppBar(
+    title : String,
+){
+    val context = LocalContext.current
+
+    TopAppBar(
+        title = { Text(text = title)} ,
+        backgroundColor = Color.Cyan,
+        navigationIcon = {
+            AppBarIcon(
+                appBarAction = AppBarAction.Backbutton,
+                action = {
+                    (context as Activity).onBackPressed()
+                }
+            )
+        },
+
     )
 }
 
@@ -41,4 +69,5 @@ sealed class AppBarAction(
     val icon:ImageVector
 ){
     object  Settings:AppBarAction(R.string.settings_action, Icons.Sharp.Settings)
+    object Backbutton:AppBarAction(R.string.back_button , Icons.Sharp.ArrowBack)
 }
