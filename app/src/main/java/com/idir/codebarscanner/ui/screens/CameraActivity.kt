@@ -39,14 +39,14 @@ class CameraActivity : ComponentActivity(){
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        CameraPreview()
+            CameraScreen()
         }
     }
 }
 
 
 @Composable
-fun CameraPreview() {
+fun CameraScreen() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var preview by remember { mutableStateOf<Preview?>(null) }

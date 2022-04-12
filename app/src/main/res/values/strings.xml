@@ -18,5 +18,9 @@
     <!--  Files !-->
     <string name="file_settings">Settings.json</string>
 
+    <!-- BottomNavigationBar !-->
+    <string name="home_item">Home</string>
+    <string name="scan_item">Scan</string>
+    <string name="settings_item">Settings</string>
 
 </resources>

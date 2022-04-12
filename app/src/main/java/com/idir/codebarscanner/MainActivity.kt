@@ -16,9 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.idir.codebarscanner.ui.components.AppBar
+import com.idir.codebarscanner.ui.components.BottomNavigationBar
+import com.idir.codebarscanner.ui.components.NavigationGraph
 import com.idir.codebarscanner.ui.screens.CameraActivity
 import com.idir.codebarscanner.ui.theme.CodeBarScannerTheme
 
@@ -28,7 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CodeBarScannerTheme {
-                    App()
+                App()
             }
         }
     }
@@ -37,31 +40,13 @@ class MainActivity : ComponentActivity() {
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun App() {
-    val context = LocalContext.current
-
+    val navController = rememberNavController()
     Scaffold(
-        topBar = { AppBar(title = stringResource(id= R.string.app_name)) }
+        bottomBar = { BottomNavigationBar(navController) }
     ){
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
-            val permissionFailedMessage = stringResource(R.string.cam_permission_fail)
+        NavigationGraph(navController = navController)
 
-            Button(onClick = {
-               cameraPermissionState.launchPermissionRequest()
-               if(cameraPermissionState.hasPermission){
-                   context.startActivity(Intent(context,CameraActivity::class.java))
-
-               }else{
-                   Toast.makeText(context, permissionFailedMessage, Toast.LENGTH_SHORT).show()
-               }
-           }) {
-               Text(stringResource(R.string.scan_single_button))
-           }
-        }
     }
 }
+
 

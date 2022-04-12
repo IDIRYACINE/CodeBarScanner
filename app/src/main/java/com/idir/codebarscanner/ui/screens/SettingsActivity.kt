@@ -39,16 +39,10 @@ class SettingsActivity : ComponentActivity(){
 }
 
 @Composable
-private fun SettingsScreen( controller : SettingsController = SettingsController()){
+fun SettingsScreen(controller : SettingsController = SettingsController()){
     var state by remember {mutableStateOf(controller.settings)}
 
-    Scaffold(
-        topBar = {
-            SecondaryAppBar(
-                title = stringResource(id= R.string.settings_title),
-            )
-        }
-    ) {
+
         val context = LocalContext.current
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -86,7 +80,7 @@ private fun SettingsScreen( controller : SettingsController = SettingsController
             }
         }
     }
-}
+
 
 @Preview(showBackground = true)
 @Composable
