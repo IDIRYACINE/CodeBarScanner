@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,11 +13,11 @@ import com.idir.codebarscanner.ui.theme.CodeBarScannerTheme
 
 @Composable
 fun AttributeRow(
-    attributeName : String,
-    initialValue : String ,
-    onValueChange : (textFieldValue:String) -> Unit,
-    space : Int? = 10,
-    padding : Int? = 16
+    attributeName: String,
+    initialValue: String,
+    onValueChange: (textFieldValue:String) -> Unit,
+    space: Int? = 10,
+    padding: Int? = 16
 ){
     Row (
         horizontalArrangement = Arrangement.Center,
@@ -37,6 +38,7 @@ private fun CustomLabel(name : String){
 @Composable
 private fun CustomTextField(value:String ,onValueChange: (textFieldValue : String) -> Unit){
     TextField(value = value, onValueChange = onValueChange)
+
 }
 
 

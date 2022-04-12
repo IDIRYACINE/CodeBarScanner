@@ -3,8 +3,12 @@ package com.idir.codebarscanner.application
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.core.content.res.TypedArrayUtils.getString
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.infrastructure.StorageManager
@@ -13,23 +17,24 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 @Serializable
-data class Settings(var host:String , var username:String , var password:String)
+data class Settings(var host:String = "" ,
+                    val username:String = "" ,
+                    var password:String = "")
 
 class SettingsController() : ViewModel() {
 
-    lateinit var settings : Settings
+    var settings : Settings = Settings()
         private set
 
     val manager : StorageManager = StorageManager()
 
     fun load(context: Context) {
         val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
-
         try {
             settings = manager.loadFromFile(directory)
         }
         catch (excetion:Exception){
-            settings = Settings("","","")
+            settings = Settings()
         }
     }
 
@@ -38,4 +43,5 @@ class SettingsController() : ViewModel() {
         val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
         manager.saveToFile(json , directory)
     }
+
 }

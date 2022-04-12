@@ -23,11 +23,8 @@ class StorageManager {
             }
         }
         else{
-           file.createNewFile()
-        }
-
+           file.createNewFile() }
     }
-
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> loadFromFile(fileName: String) : T {
         val inputStream =  FileInputStream(fileName)

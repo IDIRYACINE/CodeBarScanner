@@ -12,8 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -32,16 +32,15 @@ class SettingsActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         setContent {
-            val controller = rememberMyAppState()
-            controller.load(LocalContext.current)
-            SettingsScreen(controller)
+            SettingsScreen()
         }
     }
 
 }
 
 @Composable
-private fun SettingsScreen(controller:SettingsController){
+private fun SettingsScreen( controller : SettingsController = SettingsController()){
+    var state by remember {mutableStateOf(controller.settings)}
 
     Scaffold(
         topBar = {
@@ -57,23 +56,24 @@ private fun SettingsScreen(controller:SettingsController){
             horizontalAlignment = Alignment.End
 
         ) {
+
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_url),
-                initialValue = controller.settings.host,
-                onValueChange = {controller.settings.host = it}
+                initialValue = state.host,
+                onValueChange = {state.host = it}
             )
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_username),
-                initialValue = controller.settings.username,
+                initialValue = state.username,
                 onValueChange = {
-                    controller.settings.username = it
+                    state = state.copy(state.host,it,state.password)
                     Log.wtf("IDIRIDIR",controller.settings.username)
                 }
             )
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_password),
-                initialValue = controller.settings.password,
-                onValueChange = {controller.settings.password = it}
+                initialValue = state.password,
+                onValueChange = {state.password = it}
             )
             Button(
                 modifier = Modifier.padding(16.dp),
@@ -88,18 +88,11 @@ private fun SettingsScreen(controller:SettingsController){
     }
 }
 
-@Composable
-fun rememberMyAppState() = remember() {
-    SettingsController()
-}
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     CodeBarScannerTheme {
-        SettingsScreen(SettingsController())
+        SettingsScreen()
     }
 }
 
