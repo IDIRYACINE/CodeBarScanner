@@ -10,7 +10,6 @@ import java.io.FileOutputStream
 import java.util.*
 
 class StorageManager {
-
     fun saveToFile(content : String , fileName :String ){
         val file = File( fileName)
         if(file.exists()){
@@ -25,6 +24,7 @@ class StorageManager {
         else{
            file.createNewFile() }
     }
+
     @OptIn(ExperimentalSerializationApi::class)
     inline fun <reified T> loadFromFile(fileName: String) : T {
         val inputStream =  FileInputStream(fileName)

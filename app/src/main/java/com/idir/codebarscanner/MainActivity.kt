@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
 import com.idir.codebarscanner.ui.components.AppBar
+import com.idir.codebarscanner.ui.components.AttributeRow
 import com.idir.codebarscanner.ui.components.BottomNavigationBar
 import com.idir.codebarscanner.ui.components.NavigationGraph
 import com.idir.codebarscanner.ui.screens.CameraActivity
@@ -42,11 +41,15 @@ class MainActivity : ComponentActivity() {
 fun App() {
     val navController = rememberNavController()
     Scaffold(
+
         bottomBar = { BottomNavigationBar(navController) }
     ){
-        NavigationGraph(navController = navController)
+            innerPadding ->  Box(modifier = Modifier.padding(innerPadding)) {
+                NavigationGraph(navController = navController)
+            }
 
     }
 }
+
 
 

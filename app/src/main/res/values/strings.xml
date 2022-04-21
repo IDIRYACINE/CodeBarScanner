@@ -14,13 +14,29 @@
     <!-- Buttons !-->
     <string name="save_button">Save</string>
     <string name="back_button">Go Back</string>
+    <string name="button_confirm">Confirm</string>
+    <string name="button_cancel">Cancel</string>
 
     <!--  Files !-->
     <string name="file_settings">Settings.json</string>
+    <string name="file_groups">CodebarGroups.json</string>
 
     <!-- BottomNavigationBar !-->
     <string name="home_item">Home</string>
     <string name="scan_item">Scan</string>
     <string name="settings_item">Settings</string>
+
+    <!-- Card Actions !-->
+    <string name="actions_delete">Delete</string>
+    <string name="actions_add">New Group</string>
+    <string name="actions_active">Active</string>
+    <string name="actions_desactive">Disabled</string>
+    <string name="actions_send">Send</string>
+    <string name="actions_edit">Edit</string>
+
+
+    <!-- Popup !-->
+    <string name="popup_add_title">New Group</string>
+    <string name="popup_edit_title">Edit Group</string>
 
 </resources>

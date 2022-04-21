@@ -13,7 +13,7 @@ import com.google.mlkit.vision.common.InputImage
 import java.util.concurrent.TimeUnit
 
 @SuppressLint("UnsafeOptInUsageError")
-class BarCodeAnalyser(private val onBarcodeDetected: (barcodes: List<Barcode>) -> Unit) : ImageAnalysis.Analyzer {
+class CodebarAnalyser(private val onBarcodeDetected: (barcodes: List<Barcode>) -> Unit) : ImageAnalysis.Analyzer {
 
     private var lastAnalyzedTimeStamp = 0L
     private val barcodeScanner : BarcodeScanner

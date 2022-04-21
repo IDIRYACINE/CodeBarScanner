@@ -1,32 +1,26 @@
 package com.idir.codebarscanner.application
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.core.content.res.TypedArrayUtils.getString
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.idir.codebarscanner.R
+import com.idir.codebarscanner.data.Settings
 import com.idir.codebarscanner.infrastructure.StorageManager
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import com.idir.codebarscanner.infrastructure.Provider
 
-@Serializable
-data class Settings(var host:String = "" ,
-                    val username:String = "" ,
-                    var password:String = "")
 
 class SettingsController() : ViewModel() {
 
-    var settings : Settings = Settings()
+    lateinit var settings : Settings
         private set
 
-    val manager : StorageManager = StorageManager()
+    val manager : StorageManager
+
+    init{
+        manager = Provider.storageManager
+    }
+
 
     fun load(context: Context) {
         val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)

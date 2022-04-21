@@ -1,5 +1,6 @@
 package com.idir.codebarscanner.ui.screens
 
+import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -19,13 +20,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
+import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.CameraController
-import com.idir.codebarscanner.infrastructure.BarCodeAnalyser
+import com.idir.codebarscanner.infrastructure.CodebarAnalyser
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -36,17 +40,41 @@ class CameraActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
 
         setContent(){
-
-        Spacer(modifier = Modifier.height(10.dp))
-
             CameraScreen()
         }
     }
 }
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun CameraScreen() {
+fun CameraScreen(){
+    val context = LocalContext.current
+
+    val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
+    val permissionFailedMessage = stringResource(R.string.cam_permission_fail)
+
+    if(cameraPermissionState.hasPermission){
+        CameraPreview()
+
+    }else{
+        Toast.makeText(context, permissionFailedMessage, Toast.LENGTH_SHORT).show()
+
+        Button(onClick = {
+            cameraPermissionState.launchPermissionRequest()
+
+        },
+        content = {Text("Request Permissions")}
+        )
+
+    }
+
+
+}
+
+
+@Composable
+fun CameraPreview() {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var preview by remember { mutableStateOf<Preview?>(null) }
@@ -110,7 +138,7 @@ fun CameraScreen() {
 }
 
 private fun buildImageAnalyser(controller : CameraController): ImageAnalysis {
-    val barcodeAnalyser = BarCodeAnalyser(onBarcodeDetected = { controller.googleVisionBarcodeHelper(it) })
+    val barcodeAnalyser = CodebarAnalyser(onBarcodeDetected = { controller.googleVisionBarcodeHelper(it) })
     val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
     return ImageAnalysis.Builder()

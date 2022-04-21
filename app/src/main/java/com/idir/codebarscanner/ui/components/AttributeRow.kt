@@ -42,11 +42,4 @@ private fun CustomTextField(value:String ,onValueChange: (textFieldValue : Strin
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CodeBarScannerTheme {
-        AttributeRow("Host","http://locahlost:3000",{})
-    }
-}
 
