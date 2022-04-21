@@ -1,0 +1,50 @@
+package com.idir.codebarscanner.ui.components.barcodes
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
+import com.idir.codebarscanner.R
+import com.idir.codebarscanner.data.CardPopupState
+
+@Composable
+fun ManageCardPopup(
+    state : CardPopupState,
+){
+    val fieldValue = remember{state.value}
+
+    AlertDialog(
+        onDismissRequest = {
+            state.onCancel()
+        },
+        title = {
+            Text(stringResource(id =  state.title.value))
+        },
+        text = {
+            TextField(value = fieldValue.value,
+                onValueChange = {
+                fieldValue.value = it
+            })
+        },
+        buttons = {
+            Row(
+                horizontalArrangement = Arrangement.End,
+            ){
+                TextButton(onClick = {
+                    state.onCancel()
+                }) {
+                    Text(stringResource(id = R.string.button_cancel))
+                }
+                TextButton(onClick = {
+                    state.onConfirm(fieldValue.value)
+                }) {
+                    Text(stringResource(id = R.string.button_confirm))
+                }
+            }
+        }
+    )
+}
