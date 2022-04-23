@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.idir.codebarscanner.data.ActionsIcons
 import com.idir.codebarscanner.data.VoidCallback
+import androidx.compose.material.Switch
+import com.idir.codebarscanner.data.ToggleCallback
 
 
 @Composable
@@ -17,28 +19,18 @@ fun CardAction(action: ActionsIcons,
 }
 
 @Composable
-fun ToggleAction(activeAction : ActionsIcons ,
-                 disabledAction : ActionsIcons ,
-                 onClick:VoidCallback,
+fun ToggleAction(
+                 onClick:ToggleCallback,
                  active : MutableState<Boolean>
                  ){
 
     val isActive = remember {active}
-
-    fun action() : ActionsIcons{
-        if(isActive.value){
-            return activeAction
+    Switch(
+        checked = isActive.value,
+        onCheckedChange = {
+            isActive.value = it
+            onClick(it)
         }
-        else{
-            return disabledAction
-        }
-    }
-
-    IconButton(onClick = {
-        onClick()
-    }) {
-        Icon(imageVector =action().icon
-            , contentDescription = stringResource(action().label))
-    }
+    )
 
 }

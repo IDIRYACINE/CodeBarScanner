@@ -1,15 +1,21 @@
 package com.idir.codebarscanner.infrastructure
 
 import android.util.Log
+import com.idir.codebarscanner.infrastructure.serializers.MutableStateSerializer
+import com.idir.codebarscanner.infrastructure.serializers.SnapshotStateListSerializer
 import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.UseSerializers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.FileReader
 import java.util.*
 
 class StorageManager {
+
     fun saveToFile(content : String , fileName :String ){
         val file = File( fileName)
         if(file.exists()){

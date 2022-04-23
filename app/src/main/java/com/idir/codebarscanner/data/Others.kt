@@ -1,11 +1,14 @@
+@file:UseSerializers(MutableStateSerializer::class)
+
 package com.idir.codebarscanner.data
 
+import androidx.compose.runtime.MutableState
+import com.idir.codebarscanner.infrastructure.serializers.MutableStateSerializer
 import kotlinx.serialization.Serializable
-
+import kotlinx.serialization.UseSerializers
 
 @Serializable
-data class Settings(var host:String = "" ,
-                    val username:String = "" ,
-                    var password:String = "",
-
-                    )
+data class Settings(val host:MutableState<String>  ,
+                    val username:MutableState<String> ,
+                    val password:MutableState<String> ,
+)

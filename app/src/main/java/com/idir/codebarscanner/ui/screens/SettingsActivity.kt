@@ -10,9 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,8 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.SettingsController
+import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.ui.components.AttributeRow
-import com.idir.codebarscanner.ui.components.SecondaryAppBar
 import com.idir.codebarscanner.ui.theme.CodeBarScannerTheme
 
 class SettingsActivity : ComponentActivity(){
@@ -39,8 +37,8 @@ class SettingsActivity : ComponentActivity(){
 }
 
 @Composable
-fun SettingsScreen(controller : SettingsController = SettingsController()){
-    var state by remember {mutableStateOf(controller.settings)}
+fun SettingsScreen(controller : SettingsController = Provider.settingsController){
+    val settings = controller.settings
 
 
         val context = LocalContext.current
@@ -53,27 +51,26 @@ fun SettingsScreen(controller : SettingsController = SettingsController()){
 
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_url),
-                initialValue = state.host,
-                onValueChange = {state.host = it}
+                initialValue = settings.host.value,
+                onValueChange = {settings.host.value = it}
             )
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_username),
-                initialValue = state.username,
+                initialValue = settings.username.value,
                 onValueChange = {
-                    state = state.copy(state.host,it,state.password)
-                    Log.wtf("IDIRIDIR",controller.settings.username)
+                    settings.username.value = it
                 }
             )
             AttributeRow(
                 attributeName = stringResource(id = R.string.settings_host_password),
-                initialValue = state.password,
-                onValueChange = {state.password = it}
+                initialValue = settings.password.value,
+                onValueChange = {settings.password.value = it}
             )
             Button(
                 modifier = Modifier.padding(16.dp),
                 onClick = {
-                    controller.save(context)
-                    (context as Activity).onBackPressed()
+                    //controller.save(context)
+                    Provider.saveAll(context)
                 }
             ) {
                 Text(stringResource(id = R.string.save_button))

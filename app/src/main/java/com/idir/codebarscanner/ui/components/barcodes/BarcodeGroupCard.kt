@@ -14,10 +14,12 @@ import androidx.compose.ui.unit.dp
 import com.idir.codebarscanner.application.HomeController
 import com.idir.codebarscanner.data.ActionsIcons
 import com.idir.codebarscanner.data.BarcodeGroup
+import com.idir.codebarscanner.infrastructure.codebar.BarcodeBroadcaster
+import com.idir.codebarscanner.infrastructure.codebar.IBarcodeBroadcaster
 
 
 @Composable
-fun BarcodeGroupCard(barcodeGroup : BarcodeGroup, controller:HomeController){
+fun BarcodeGroupCard(barcodeGroup : BarcodeGroup, controller:HomeController , barcodeBroadcaster: IBarcodeBroadcaster){
     val context = LocalContext.current
 
     Card(
@@ -47,15 +49,15 @@ fun BarcodeGroupCard(barcodeGroup : BarcodeGroup, controller:HomeController){
               CardAction(action = ActionsIcons.Delete, onClick = {controller.deleteGroup(barcodeGroup)})
               ToggleAction(
                   active = barcodeGroup.isActive,
-                  activeAction = ActionsIcons.ActiveCard,
-                  disabledAction=ActionsIcons.DesactiveCard ,
-                  onClick = {controller.toggleGroup(barcodeGroup)}
-              )
+                  onClick = {
+                      barcodeGroup.isActive.value = it
+                      if(it){
+                          barcodeBroadcaster.subscribeToBarcodeStream(barcodeGroup)
+                      }else{
+                          barcodeBroadcaster.unsubscribeFromBarcodeStream(barcodeGroup)
+                      }
+                  }
+              )}
             }
         }
     }
-}
-
-
-
-

@@ -1,6 +1,7 @@
 package com.idir.codebarscanner.application
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.Settings
@@ -15,11 +16,7 @@ class SettingsController() : ViewModel() {
     lateinit var settings : Settings
         private set
 
-    val manager : StorageManager
-
-    init{
-        manager = Provider.storageManager
-    }
+    val manager : StorageManager = Provider.storageManager
 
 
     fun load(context: Context) {
@@ -28,7 +25,7 @@ class SettingsController() : ViewModel() {
             settings = manager.loadFromFile(directory)
         }
         catch (excetion:Exception){
-            settings = Settings()
+            settings = Settings(mutableStateOf(""),mutableStateOf(""), mutableStateOf(""))
         }
     }
 

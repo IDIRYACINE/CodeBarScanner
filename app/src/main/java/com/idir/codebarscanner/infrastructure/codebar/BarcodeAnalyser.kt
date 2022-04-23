@@ -1,4 +1,4 @@
-package com.idir.codebarscanner.infrastructure
+package com.idir.codebarscanner.infrastructure.codebar
 
 import android.annotation.SuppressLint
 import android.media.Image
@@ -10,16 +10,22 @@ import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.common.InputImage
+import com.idir.codebarscanner.data.OnBarCodeDetected
 import java.util.concurrent.TimeUnit
 
 @SuppressLint("UnsafeOptInUsageError")
-class CodebarAnalyser(private val onBarcodeDetected: (barcodes: List<Barcode>) -> Unit) : ImageAnalysis.Analyzer {
+class BarcodeAnalyser : ImageAnalysis.Analyzer {
 
+    private lateinit var onBarcodeDetected: OnBarCodeDetected
     private var lastAnalyzedTimeStamp = 0L
     private val barcodeScanner : BarcodeScanner
 
     init {
         barcodeScanner = setUpBarcodeScanner()
+    }
+
+    fun setOnBarcodeDetected(callback : OnBarCodeDetected){
+        onBarcodeDetected = callback
     }
 
     override fun analyze(image: ImageProxy) {

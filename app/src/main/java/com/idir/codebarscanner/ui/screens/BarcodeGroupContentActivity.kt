@@ -17,7 +17,7 @@ class BarcodeGroupContentActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BarcodeGroupContentScreen(Provider.homeController.barcodes[0])
+            BarcodeGroupContentScreen(Provider.homeController.contentActivityGroup)
         }
     }
 }

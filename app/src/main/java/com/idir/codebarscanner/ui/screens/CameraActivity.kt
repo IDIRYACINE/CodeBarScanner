@@ -1,6 +1,7 @@
 package com.idir.codebarscanner.ui.screens
 
 import android.Manifest
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -29,7 +30,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.CameraController
-import com.idir.codebarscanner.infrastructure.CodebarAnalyser
+import com.idir.codebarscanner.infrastructure.Provider
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -74,11 +75,10 @@ fun CameraScreen(){
 
 
 @Composable
-fun CameraPreview() {
+fun CameraPreview(controller: CameraController = Provider.cameraController) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var preview by remember { mutableStateOf<Preview?>(null) }
-    val controller by remember {mutableStateOf(CameraController(context = context))}
     var cameraSelector : CameraSelector
 
     AndroidView(
@@ -107,7 +107,7 @@ fun CameraPreview() {
                         lifecycleOwner,
                         cameraSelector,
                         preview,
-                        buildImageAnalyser(controller)
+                        buildImageAnalyser(controller,context)
                     )
                 } catch (e: Exception) {
                     Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
@@ -137,8 +137,9 @@ fun CameraPreview() {
     }
 }
 
-private fun buildImageAnalyser(controller : CameraController): ImageAnalysis {
-    val barcodeAnalyser = CodebarAnalyser(onBarcodeDetected = { controller.googleVisionBarcodeHelper(it) })
+private fun buildImageAnalyser(controller : CameraController , context : Context): ImageAnalysis {
+    val barcodeAnalyser = Provider.barcodeAnalyser
+    barcodeAnalyser.setOnBarcodeDetected { controller.googleVisionBarcodeHelper(it,context) }
     val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
     return ImageAnalysis.Builder()
