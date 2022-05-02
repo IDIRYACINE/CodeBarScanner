@@ -16,23 +16,9 @@ class SettingsController() : ViewModel() {
     lateinit var settings : Settings
         private set
 
-    val manager : StorageManager = Provider.storageManager
-
-
     fun load(context: Context) {
-        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
-        try {
-            settings = manager.loadFromFile(directory)
-        }
-        catch (excetion:Exception){
-            settings = Settings(mutableStateOf(""),mutableStateOf(""), mutableStateOf(""))
-        }
+        settings = Settings.load(context)
     }
 
-    fun save(context:Context){
-        val json = Json.encodeToString(settings)
-        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
-        manager.saveToFile(json , directory)
-    }
 
 }

@@ -30,6 +30,9 @@
         <activity android:name=".ui.screens.SettingsActivity"/>
         <activity android:name=".ui.screens.BarcodeGroupContentActivity"/>
 
+        <service android:name=".infrastructure.services.DataSaverService" />
+        <receiver android:name=".infrastructure.services.ServiceBroadcaster" />
+
     </application>
 
 </manifest>

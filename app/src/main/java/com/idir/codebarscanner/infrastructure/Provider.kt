@@ -30,10 +30,5 @@ object Provider {
         cameraController = CameraController(barcodeBroadcaster)
     }
 
-    fun saveAll(context: Context){
-        homeController.save(context)
-        settingsController.save(context)
-    }
-
 
 }

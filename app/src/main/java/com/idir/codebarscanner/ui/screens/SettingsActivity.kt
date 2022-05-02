@@ -1,23 +1,17 @@
 package com.idir.codebarscanner.ui.screens
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.SettingsController
 import com.idir.codebarscanner.infrastructure.Provider
@@ -40,8 +34,6 @@ class SettingsActivity : ComponentActivity(){
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
     val settings = controller.settings
 
-
-        val context = LocalContext.current
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -66,15 +58,7 @@ fun SettingsScreen(controller : SettingsController = Provider.settingsController
                 initialValue = settings.password.value,
                 onValueChange = {settings.password.value = it}
             )
-            Button(
-                modifier = Modifier.padding(16.dp),
-                onClick = {
-                    //controller.save(context)
-                    Provider.saveAll(context)
-                }
-            ) {
-                Text(stringResource(id = R.string.save_button))
-            }
+
         }
     }
 

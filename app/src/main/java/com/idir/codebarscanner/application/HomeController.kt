@@ -1,10 +1,14 @@
 package com.idir.codebarscanner.application
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.BarcodeGroup
@@ -65,7 +69,16 @@ class HomeController : ViewModel()  {
     }
 
     fun sendData(context: Context){
-        httpManager.sendData()
+        val resources = context.resources
+        fun onSuccess(){
+            makeText(context,resources.getString(R.string.send_data_failed),Toast.LENGTH_LONG).show()
+        }
+
+        fun onFail(){
+            makeText(context, resources.getString(R.string.send_data_failed),Toast.LENGTH_LONG).show()
+        }
+
+        httpManager.sendData({ onSuccess() }, { onFail() })
     }
 
     fun setEditGroup(group: BarcodeGroup) {
@@ -77,23 +90,9 @@ class HomeController : ViewModel()  {
         context.startActivity(Intent(context, BarcodeGroupContentActivity::class.java))
     }
 
-    fun load(context : Context){
-        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_groups)
-        try {
-            val raw : List<BarcodeGroup> = Provider.storageManager.loadFromFile(directory)
-            barcodes.addAll(raw)
-        }
-        catch (exception:Exception){
-
-        }
-
+    fun load(context : Context) {
+        val raw : List<BarcodeGroup> = BarcodeGroup.load(context)
+        barcodes.addAll(raw)
     }
-
-    fun save(context: Context){
-        val json = Json.encodeToString(barcodes.toList())
-        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_groups)
-        Provider.storageManager.saveToFile(json , directory)
-    }
-
 
 }

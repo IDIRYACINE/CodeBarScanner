@@ -2,6 +2,7 @@ package com.idir.codebarscanner.infrastructure
 
 import android.util.Log
 import com.idir.codebarscanner.data.Settings
+import com.idir.codebarscanner.data.VoidCallback
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import okhttp3.*
@@ -17,14 +18,14 @@ class HttpManager(
     private val client : OkHttpClient = OkHttpClient()
     private val dataSource = Provider.barcodeBroadcaster
 
-    fun sendData(){
+    fun sendData(onSuccess:VoidCallback , onFail:VoidCallback){
         Thread {
             val json = Json.encodeToString(dataSource.getSubscribersAsMap())
-            postData(json)
+            postData(json,onSuccess,onFail)
         }.start()
     }
 
-    private fun postData(data: String) : ResponseBody?{
+    private fun postData(data: String,onSuccess:VoidCallback , onFail:VoidCallback) : ResponseBody?{
         try {
             val body: RequestBody = data.toRequestBody(jsonType)
             val request: Request = Request.Builder()
@@ -32,10 +33,12 @@ class HttpManager(
                 .post(body)
                 .build()
             client.newCall(request).execute().use { response ->
+                onSuccess()
                 return response.body }
 
         }
             catch (exceptions:Exception){
+                onFail()
                 return null
             }
     }

@@ -39,4 +39,8 @@
     <string name="popup_add_title">New Group</string>
     <string name="popup_edit_title">Edit Group</string>
 
+    <!--  Messages !-->
+    <string name="send_data_failed">Could not send barcodes</string>
+    <string name="send_data_success">Barcodes to the api</string>
+
 </resources>
