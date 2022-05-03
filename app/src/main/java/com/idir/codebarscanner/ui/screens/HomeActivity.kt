@@ -73,8 +73,8 @@ fun HomeScreen(controller : HomeController = Provider.homeController ){
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ){
-            items(controller.barcodes){
-                barcodeGroup -> BarcodeGroupCard(barcodeGroup,controller,Provider.barcodeBroadcaster)    }
+            items(Provider.barcodesManager.getGroups()){
+                barcodeGroup -> BarcodeGroupCard(barcodeGroup,controller)    }
             }
         }
     }

@@ -45,7 +45,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         val settings : String = Json.encodeToString(Provider.settingsController.settings)
-        val groups : String = Json.encodeToString(Provider.homeController.barcodes.toList())
+        val groups : String = Provider.barcodesManager.encodeToJson()
 
         val data = Bundle()
 

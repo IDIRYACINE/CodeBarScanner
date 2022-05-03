@@ -1,4 +1,4 @@
-package com.idir.codebarscanner.infrastructure.codebar
+package com.idir.codebarscanner.infrastructure.barcode
 
 import android.annotation.SuppressLint
 import android.media.Image

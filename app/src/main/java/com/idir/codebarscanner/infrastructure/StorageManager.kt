@@ -1,5 +1,6 @@
 package com.idir.codebarscanner.infrastructure
 
+import android.content.Context
 import android.util.Log
 import com.idir.codebarscanner.infrastructure.serializers.MutableStateSerializer
 import com.idir.codebarscanner.infrastructure.serializers.SnapshotStateListSerializer
@@ -15,8 +16,14 @@ import java.io.FileReader
 import java.util.*
 
 class StorageManager {
+    companion object{
+        const val BARCODES_REGISTER_KEY = "barcodesRegister"
+        const val GROUPS_REGISTER_KEY = "groupsRegister"
+        const val GROUPS_KEY = "groups"
 
-    fun saveToFile(content : String , fileName :String ){
+    }
+
+    private fun saveToFile(content : String , fileName :String ){
         val file = File( fileName)
         if(file.exists()){
             try {
@@ -31,10 +38,58 @@ class StorageManager {
            file.createNewFile() }
     }
 
+    fun saveSettings(context: Context, json:String){
+        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
+        saveToFile(json , directory)
+    }
+
     @OptIn(ExperimentalSerializationApi::class)
-    inline fun <reified T> loadFromFile(fileName: String) : T {
-        val inputStream =  FileInputStream(fileName)
-        return Json.decodeFromStream(inputStream)
+    fun loadSettings(context : Context) : Settings{
+        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_settings)
+        return try {
+            val inputStream =  FileInputStream(directory)
+            return Json.decodeFromStream(inputStream)
+
+        } catch (exception:Exception){
+            Settings()
+        }
+
+    }
+
+    fun saveBarcodes(context: Context, json:String){
+        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_groups)
+        saveToFile(json , directory)
+    }
+
+    @OptIn(ExperimentalSerializationApi::class)
+    fun loadBarcode(context : Context) : Map<String,Any>{
+        val directory = context.filesDir.absolutePath +'/'+ context.getString(R.string.file_groups)
+        return try {
+            val inputStream =  FileInputStream(directory)
+            val json : Map<String,JsonElement> = Json.decodeFromStream(inputStream)
+
+            val registerSerializer =MapSerializer(String.serializer(),Int.serializer())
+            val register: Map<String, Int> = decodeFromJsonElement(  registerSerializer ,json[GROUPS_REGISTER_KEY]!!)
+            val barcodeRegister = decodeFromJsonElement(registerSerializer,json[BARCODES_REGISTER_KEY]!!)
+
+            val groupSerializer = MapSerializer(String.serializer(),BarcodeGroup.serializer())
+            val groups = decodeFromJsonElement(groupSerializer,json[GROUPS_KEY]!!)
+
+            return mapOf(
+                GROUPS_REGISTER_KEY to register.toMutableMap(),
+                BARCODES_REGISTER_KEY to barcodeRegister.toMutableMap(),
+                GROUPS_KEY to groups.toMutableMap()
+            )
+
+        } catch (exception:Exception){
+            Log.wtf("IDIRIDR",exception.stackTraceToString())
+            mapOf(
+                GROUPS_REGISTER_KEY to mutableMapOf<String,Int>(),
+                BARCODES_REGISTER_KEY to mutableMapOf<String,Int>(),
+                GROUPS_KEY to mutableMapOf<String,BarcodeGroup>()
+            )
+        }
+
     }
 
 }

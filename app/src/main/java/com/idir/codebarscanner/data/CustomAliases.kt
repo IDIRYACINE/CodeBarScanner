@@ -9,3 +9,4 @@ typealias ConfirmFunction = (value:String)->Unit
 typealias OnBarCodeDetected = (barcodes: List<Barcode>) -> Unit
 typealias JsonMap = Map<String,JsonElement>
 
+

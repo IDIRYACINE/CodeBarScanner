@@ -32,7 +32,7 @@ class SettingsController : ViewModel() {
     }
 
     fun load(context: Context) {
-        settings = Settings.load(context)
+        settings = Provider.storageManager.loadSettings(context)
     }
 
 
