@@ -16,8 +16,6 @@ class ServiceBroadcaster : BroadcastReceiver() {
         val dataSaver = Intent(context,DataSaverService::class.java)
         val bundle = Bundle()
 
-        Log.wtf("IDIRIDIR","RECEIVER")
-
         passSerializable(intent,bundle,SETTINGS_KEY)
         passSerializable(intent,bundle,BARCODE_KEY)
         dataSaver.putExtras(bundle)

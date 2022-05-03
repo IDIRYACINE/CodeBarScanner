@@ -1,5 +1,6 @@
 package com.idir.codebarscanner.ui.components
 
+import android.os.Handler
 import androidx.annotation.StringRes
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -27,10 +29,10 @@ import com.idir.codebarscanner.ui.screens.*
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController,handler: Handler) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            HomeScreen()
+            HomeScreen(handler = handler)
         }
         composable(BottomNavItem.Scan.screen_route) {
             CameraScreen()

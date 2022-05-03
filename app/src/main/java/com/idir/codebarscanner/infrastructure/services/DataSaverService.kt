@@ -12,6 +12,7 @@ class DataSaverService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         val context = applicationContext
         val extras = intent.extras!!
+
         val settings =  extras.getString("Settings")!!
         val barcodes =  extras.getString("Barcodes")!!
 

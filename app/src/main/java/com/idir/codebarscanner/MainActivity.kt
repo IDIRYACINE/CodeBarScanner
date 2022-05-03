@@ -2,6 +2,9 @@ package com.idir.codebarscanner
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
@@ -14,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.idir.codebarscanner.infrastructure.HttpManager
 import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.infrastructure.services.ServiceBroadcaster
 import com.idir.codebarscanner.ui.components.BottomNavigationBar
@@ -24,6 +28,19 @@ import kotlinx.serialization.json.Json
 
 
 class MainActivity : ComponentActivity() {
+    private val context  = this
+
+    private val handler = Handler(Looper.getMainLooper()) {
+        if(it.what == HttpManager.SUCCESS){
+            val resources = context.resources
+            Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
+        }
+        else{
+            val resources = context.resources
+            Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
+        }
+        return@Handler true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +55,7 @@ class MainActivity : ComponentActivity() {
         Provider.initApp(this)
         setContent {
             CodeBarScannerTheme {
-                App()
+                App(handler)
             }
         }
     }
@@ -62,13 +79,13 @@ class MainActivity : ComponentActivity() {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun App() {
+fun App(handler: Handler) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController) }
     ){
             innerPadding ->  Box(modifier = Modifier.padding(innerPadding)) {
-                NavigationGraph(navController = navController)
+                NavigationGraph(navController = navController,handler)
             }
     }
 }

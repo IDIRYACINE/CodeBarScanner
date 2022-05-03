@@ -1,19 +1,19 @@
 package com.idir.codebarscanner.ui.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
+import android.os.Handler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material.FabPosition
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.idir.codebarscanner.application.HomeController
@@ -22,21 +22,10 @@ import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.ui.components.barcodes.BarcodeGroupCard
 import com.idir.codebarscanner.ui.components.barcodes.ManageCardPopup
 
-class HomeActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            HomeScreen()
-        }
-    }
-}
-
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun HomeScreen(controller : HomeController = Provider.homeController ){
-    val context = LocalContext.current
+fun HomeScreen(controller : HomeController = Provider.homeController,handler: Handler ){
     val openDialog = remember{ controller.popupCardState.isOpen}
 
     Scaffold(
@@ -54,7 +43,7 @@ fun HomeScreen(controller : HomeController = Provider.homeController ){
 
             IconButton(
                 onClick = {
-                   controller.sendData(context)
+                   controller.sendData(handler)
                 }
             ){
                 val action = ActionsIcons.Send

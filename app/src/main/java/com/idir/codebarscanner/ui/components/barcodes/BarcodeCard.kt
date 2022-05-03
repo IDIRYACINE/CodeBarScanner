@@ -25,6 +25,7 @@ fun BarcodeCard(barcode: Barcode){
             modifier = Modifier.padding(15.dp)
         ) {
             Text(text = barcode.value)
+            Text(text = barcode.timestamp)
         }
     }
 }

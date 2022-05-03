@@ -34,19 +34,6 @@ import com.idir.codebarscanner.infrastructure.Provider
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@ExperimentalPermissionsApi
-class CameraActivity : ComponentActivity(){
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent(){
-            CameraScreen()
-        }
-    }
-}
-
-
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun CameraScreen(){

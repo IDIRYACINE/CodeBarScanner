@@ -1,10 +1,11 @@
 package com.idir.codebarscanner.infrastructure
 
-import android.util.Log
+import android.content.Context
+import android.os.Handler
+import android.os.Message
+import android.widget.Toast
+import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.Settings
-import com.idir.codebarscanner.data.VoidCallback
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -14,18 +15,29 @@ class HttpManager(
     private val settings: Settings,
     ) {
 
+    companion object{
+        const val SUCCESS = 0
+        const val FAIL = -1
+    }
+
     private val jsonType : MediaType = "application/json; charset=utf-8".toMediaType()
     private val client : OkHttpClient = OkHttpClient()
-    private val dataSource = Provider.barcodeBroadcaster
 
-    fun sendData(onSuccess:VoidCallback , onFail:VoidCallback){
+
+    fun sendData(handler: Handler){
         Thread {
-            val json = Json.encodeToString(dataSource.getSubscribersAsMap())
-            postData(json,onSuccess,onFail)
+            val json = Provider.barcodesManager.encodeActiveToJson()
+            val responseCode = postData(json)
+
+            if((responseCode != null) && (responseCode == 200)){
+                onSuccess(handler)
+            }else{
+                onFail(handler)
+            }
         }.start()
     }
 
-    private fun postData(data: String,onSuccess:VoidCallback , onFail:VoidCallback) : ResponseBody?{
+    private fun postData(data: String) : Int?{
         try {
             val body: RequestBody = data.toRequestBody(jsonType)
             val request: Request = Request.Builder()
@@ -33,14 +45,20 @@ class HttpManager(
                 .post(body)
                 .build()
             client.newCall(request).execute().use { response ->
-                onSuccess()
-                return response.body }
-
-        }
+                return response.code }
+            }
             catch (exceptions:Exception){
-                onFail()
                 return null
             }
+    }
+
+    private fun onFail(handler: Handler){
+        val message: Message = handler.obtainMessage()
+        message.sendToTarget()
+    }
+    private fun onSuccess(handler: Handler){
+        val message: Message = handler.obtainMessage()
+        message.sendToTarget()
     }
 
 }

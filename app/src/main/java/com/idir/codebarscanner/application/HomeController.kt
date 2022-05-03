@@ -2,6 +2,9 @@ package com.idir.codebarscanner.application
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.makeText
 import com.idir.codebarscanner.R
@@ -49,17 +52,17 @@ class HomeController(private val barcodesManager: IBarcodeManager) {
         context.startActivity(Intent(context, BarcodeGroupContentActivity::class.java))
     }
 
-    fun sendData(context: Context){
-        val resources = context.resources
-        fun onSuccess(){
-            makeText(context,resources.getString(R.string.send_data_failed),Toast.LENGTH_LONG).show()
-        }
+    fun setEditGroup(group:BarcodeGroup){
+        barcodesManager.setActiveGroup(group)
+    }
 
-        fun onFail(){
-            makeText(context, resources.getString(R.string.send_data_failed),Toast.LENGTH_LONG).show()
-        }
+    fun sendData(handler: Handler){
+        Provider.httpManager.sendData(handler)
 
-        httpManager.sendData({ onSuccess() }, { onFail() })
+    }
+
+    fun toggleGroup(group: BarcodeGroup,value:Boolean) {
+        barcodesManager.toggleGroup(group,value)
     }
 
 

@@ -2,18 +2,19 @@ package com.idir.codebarscanner.infrastructure
 
 import android.content.Context
 import android.util.Log
-import com.idir.codebarscanner.infrastructure.serializers.MutableStateSerializer
-import com.idir.codebarscanner.infrastructure.serializers.SnapshotStateListSerializer
+import com.idir.codebarscanner.R
+import com.idir.codebarscanner.data.BarcodeGroup
+import com.idir.codebarscanner.data.Settings
 import kotlinx.serialization.ExperimentalSerializationApi
-import kotlinx.serialization.KSerializer
-import kotlinx.serialization.UseSerializers
+import kotlinx.serialization.builtins.MapSerializer
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.Json.Default.decodeFromJsonElement
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.decodeFromStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.io.FileReader
-import java.util.*
 
 class StorageManager {
     companion object{

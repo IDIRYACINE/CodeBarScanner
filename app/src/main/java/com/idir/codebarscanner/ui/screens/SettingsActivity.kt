@@ -1,34 +1,22 @@
 package com.idir.codebarscanner.ui.screens
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.Divider
+import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.SettingsController
+import com.idir.codebarscanner.data.Settings
+import com.idir.codebarscanner.data.SettingsIcons
 import com.idir.codebarscanner.infrastructure.Provider
-import com.idir.codebarscanner.ui.components.AttributeRow
-import com.idir.codebarscanner.ui.theme.CodeBarScannerTheme
-
-class SettingsActivity : ComponentActivity(){
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContent {
-            SettingsScreen()
-        }
-    }
-
-}
+import com.idir.codebarscanner.ui.components.SettingRow
+import com.idir.codebarscanner.ui.components.SettingSectionHeader
 
 @Composable
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
