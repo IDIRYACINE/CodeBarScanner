@@ -36,7 +36,6 @@ class HomeController : ViewModel()  {
 
 
     init {
-        httpManager = Provider.httpManager
         popupCardState = CardPopupState(
             open = false,
             onConfirmCreate = {

@@ -6,10 +6,23 @@
 
     <!-- Settings Screen !-->
     <string name="settings_title">Settings</string>
+    <string name="settings_section_general">General</string>
+    <string name="settings_section_ScanControls">Scan controls</string>
+
     <string name="settings_host_url">Address</string>
     <string name="settings_host_username">Username</string>
     <string name="settings_host_password">Password</string>
     <string name="settings_header_auth">Header Auth</string>
+    <string name="settings_vibration">Vibrate</string>
+    <string name="settings_playSound">Play sound</string>
+    <string name="settings_scanDuplicate">Duplicate barcodes</string>
+    <string name="settings_scanDuplicate_description">Scanning duplicate will increase it\'s count instead of registering a new one</string>
+    <string name="settings_scanManually">Scan manually</string>
+    <string name="settings_scanManually_description">Avoid accidental scans</string>
+    <string name="settings_scanContinuous">Continuous scanning</string>
+    <string name="settings_scanContinuous_description">Auto detect barcodes</string>
+
+
 
     <!-- Buttons !-->
     <string name="save_button">Save</string>
@@ -28,7 +41,7 @@
 
     <!-- Card Actions !-->
     <string name="actions_delete">Delete</string>
-    <string name="actions_add">New Group</string>
+    <string name="actions_add">New group</string>
     <string name="actions_active">Active</string>
     <string name="actions_desactive">Disabled</string>
     <string name="actions_send">Send</string>
@@ -36,8 +49,8 @@
 
 
     <!-- Popup !-->
-    <string name="popup_add_title">New Group</string>
-    <string name="popup_edit_title">Edit Group</string>
+    <string name="popup_add_title">New group</string>
+    <string name="popup_edit_title">Edit group</string>
 
     <!--  Messages !-->
     <string name="send_data_failed">Could not send barcodes</string>

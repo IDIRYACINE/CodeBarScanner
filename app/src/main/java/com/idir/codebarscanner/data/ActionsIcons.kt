@@ -15,3 +15,12 @@ sealed class ActionsIcons(@StringRes val label:Int, var icon:ImageVector){
     object Send : ActionsIcons(R.string.actions_send , Icons.Sharp.Send)
     object Edit : ActionsIcons(R.string.actions_edit,Icons.Sharp.Edit)
 }
+
+
+sealed class SettingsIcons(@StringRes val label:Int, var icon:ImageVector){
+    object Vibrate : SettingsIcons( R.string.actions_delete , Icons.Sharp.Delete )
+    object PlaySound : SettingsIcons( R.string.actions_delete , Icons.Sharp.Delete )
+    object ContinuousScan : SettingsIcons( R.string.actions_delete , Icons.Sharp.Delete )
+    object ManualScan : SettingsIcons( R.string.actions_delete , Icons.Sharp.Delete )
+    object DuplicateScan : SettingsIcons( R.string.actions_delete , Icons.Sharp.Delete )
+}

@@ -34,40 +34,97 @@ class SettingsActivity : ComponentActivity(){
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
     val settings = controller.settings
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.End
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
 
-        ) {
-
-            AttributeRow(
-                attributeName = stringResource(id = R.string.settings_host_url),
-                initialValue = settings.host.value,
-                onValueChange = {settings.host.value = it}
-            )
-            AttributeRow(
-                attributeName = stringResource(id = R.string.settings_host_username),
-                initialValue = settings.username.value,
-                onValueChange = {
-                    settings.username.value = it
-                }
-            )
-            AttributeRow(
-                attributeName = stringResource(id = R.string.settings_host_password),
-                initialValue = settings.password.value,
-                onValueChange = {settings.password.value = it}
-            )
-
-        }
-    }
-
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    CodeBarScannerTheme {
-        SettingsScreen()
+    ){
+        GeneralSection(settings = settings)
+        ScanControlsSection(settings = settings)
+        AboutSection(settings = settings)
     }
 }
+
+fun selfToggle(state: MutableState<Boolean>){
+    state.value = !state.value
+}
+
+@Composable
+fun SelfSwitch(state: MutableState<Boolean>){
+    Switch(checked = state.value, enabled = false, onCheckedChange = {selfToggle(state)})
+}
+
+@Composable
+fun GeneralSection(settings: Settings){
+    SettingSectionHeader(title = R.string.settings_section_general)
+
+    SettingRow(
+        title = R.string.settings_host_url,
+        onClick = {},
+        actionComposable = {},
+    )
+
+    SettingRow(
+        title = R.string.settings_host_password,
+        onClick = {},
+        actionComposable = {},
+    )
+
+    SettingRow(
+        title = R.string.settings_host_username,
+        onClick = {},
+        actionComposable = {},
+    )
+
+    Divider(color= Color.LightGray, thickness = 1.dp)
+
+}
+
+@Composable
+fun ScanControlsSection(settings: Settings){
+    Divider(color= Color.LightGray, thickness = 1.dp)
+    SettingSectionHeader(title = R.string.settings_section_ScanControls)
+
+    SettingRow(
+        title = R.string.settings_vibration,
+        icon = SettingsIcons.Vibrate,
+        onClick = {selfToggle(settings.vibrate)},
+        actionComposable = { SelfSwitch(state = settings.vibrate) },
+    )
+
+    SettingRow(
+        title = R.string.settings_playSound,
+        icon = SettingsIcons.PlaySound,
+        onClick = {selfToggle(settings.playSound)},
+        actionComposable = { SelfSwitch(state = settings.playSound) },
+    )
+
+    SettingRow(
+        title = R.string.settings_scanContinuous,
+        description = R.string.settings_scanContinuous_description,
+        icon = SettingsIcons.ContinuousScan,
+        onClick = {selfToggle(settings.continuousScan)},
+        actionComposable = { SelfSwitch(state = settings.continuousScan) },
+    )
+
+    SettingRow(
+        title = R.string.settings_scanManually,
+        description = R.string.settings_scanManually_description,
+        icon = SettingsIcons.ManualScan,
+        onClick = {selfToggle(settings.manualScan)},
+        actionComposable = { SelfSwitch(state = settings.manualScan) },
+    )
+
+    SettingRow(
+        title = R.string.settings_scanDuplicate,
+        description = R.string.settings_scanDuplicate_description,
+        icon = SettingsIcons.DuplicateScan,
+        onClick = {selfToggle(settings.duplicateScan)},
+        actionComposable = { SelfSwitch(state = settings.duplicateScan) },
+    )
+    Divider(color= Color.LightGray, thickness = 1.dp)
+}
+
+@Composable
+fun AboutSection(settings: Settings){}
 
