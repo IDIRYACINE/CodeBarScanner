@@ -1,9 +1,35 @@
 package com.idir.codebarscanner.infrastructure.barcode
 
+import androidx.camera.core.ImageAnalysis
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import com.idir.codebarscanner.data.Barcode
 import com.idir.codebarscanner.data.BarcodeGroup
-import com.idir.codebarscanner.data.BarcodeGroupEntry
-import com.idir.codebarscanner.data.JsonMap
+import com.idir.codebarscanner.infrastructure.barcode.commands.ICommand
+
+interface ICameraAnalyser{
+    fun setBarcodeAnalyser(analyser:ImageAnalysis.Analyzer,processor:IBarcodeAnalyser)
+    fun getBarcodeAnalyser() : ImageAnalysis
+    fun toggleActiveState()
+    fun getActiveState() : MutableState<Boolean>
+    fun setCamera(cameraId:Int)
+    fun getCamera(): State<Int>
+
+}
+
+interface IBarcodeAnalysisMode{
+    fun isAllowed() : Boolean
+    fun turnOf()
+    fun turnOn()
+    fun onAnalysisSuccess()
+}
+
+interface IBarcodeAnalyser{
+    fun setManualMode()
+    fun setContinuousMode()
+    fun toggleActiveState()
+    fun getActiveState() : MutableState<Boolean>
+}
 
 interface IBarcodeBroadcaster {
     fun notifyBarcode(rawBarcode : String)

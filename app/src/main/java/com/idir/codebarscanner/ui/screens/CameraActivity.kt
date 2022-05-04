@@ -19,6 +19,8 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.stringResource
@@ -30,6 +32,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.common.util.concurrent.ListenableFuture
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.CameraController
+import com.idir.codebarscanner.data.CameraIcons
 import com.idir.codebarscanner.infrastructure.Provider
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -41,6 +44,7 @@ fun CameraScreen(){
 
     val cameraPermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
     val permissionFailedMessage = stringResource(R.string.cam_permission_fail)
+
 
     if(cameraPermissionState.hasPermission){
         CameraPreview()
@@ -54,9 +58,7 @@ fun CameraScreen(){
         },
         content = {Text("Request Permissions")}
         )
-
     }
-
 
 }
 
@@ -65,74 +67,46 @@ fun CameraScreen(){
 fun CameraPreview(controller: CameraController = Provider.cameraController) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-    var preview by remember { mutableStateOf<Preview?>(null) }
-    var cameraSelector : CameraSelector
 
+    val isAnalysing = controller.getAnalysisState()
+    Box {
     AndroidView(
         factory = { AndroidViewContext -> PreviewView(AndroidViewContext) },
         modifier = Modifier.fillMaxSize(),
-        update = {
-                previewView ->
-
-                cameraSelector = CameraSelector.Builder()
-                .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                .build()
-
-            val cameraProviderFuture: ListenableFuture<ProcessCameraProvider> =
-                ProcessCameraProvider.getInstance(context)
-
-            cameraProviderFuture.addListener({
-                preview = Preview.Builder().build().also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
-                }
-
-                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-                try {
-                    cameraProvider.unbindAll()
-                    cameraProvider.bindToLifecycle(
-                        lifecycleOwner,
-                        cameraSelector,
-                        preview,
-                        buildImageAnalyser(controller,context)
-                    )
-                } catch (e: Exception) {
-                    Log.d("TAG", "CameraPreview: ${e.localizedMessage}")
-                }
-            }, ContextCompat.getMainExecutor(context))
-        }
+        update = { previewView -> controller.setupCameraPreview(previewView,lifecycleOwner,context) }
     )
 
     Row(
         verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp)
+            .align(Alignment.BottomCenter)
+            .padding(40.dp)
     ) {
         IconButton(
             onClick = {
-                Toast.makeText(context, "Back Clicked", Toast.LENGTH_SHORT).show()
+                controller.toggleCameraFlash()
             }
         ) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "back arrow",
-                tint = MaterialTheme.colors.surface
+                imageVector = CameraIcons.Flash.icon,
+                contentDescription = null,
+                modifier = Modifier.scale(3F)
             )
         }
-    }
-}
-
-private fun buildImageAnalyser(controller : CameraController , context : Context): ImageAnalysis {
-    val barcodeAnalyser = Provider.barcodeAnalyser
-    barcodeAnalyser.setOnBarcodeDetected { controller.googleVisionBarcodeHelper(it,context) }
-    val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
-
-    return ImageAnalysis.Builder()
-        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-        .build()
-        .also {
-            it.setAnalyzer(cameraExecutor, barcodeAnalyser)
+        IconButton(
+            onClick = {
+                controller.toggleAnalysisState()
+            }
+        ) {
+            Icon(imageVector = CameraIcons.Analyse.icon,
+                tint = if(isAnalysing.value) Color.Red else Color.Green ,
+                modifier = Modifier.scale(3F),
+                contentDescription = null)
         }
+    }
+
+    }
+
 }

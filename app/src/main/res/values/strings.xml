@@ -30,10 +30,11 @@
     <string name="settings_version">App version</string>
 
     <!-- Buttons !-->
-    <string name="save_button">Save</string>
-    <string name="back_button">Go Back</string>
     <string name="button_confirm">Confirm</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_flash">Toggle flash</string>
+    <string name="button_back">Go back</string>
+    <string name="button_takePicture">Take picture</string>
 
     <!--  Files !-->
     <string name="file_settings">Settings.json</string>

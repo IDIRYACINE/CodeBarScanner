@@ -51,5 +51,5 @@ sealed class AppBarAction(
     val icon:ImageVector
 ){
     object  Settings:AppBarAction(R.string.settings_action, Icons.Sharp.Settings)
-    object Backbutton:AppBarAction(R.string.back_button , Icons.Sharp.ArrowBack)
+    object Backbutton:AppBarAction(R.string.button_back , Icons.Sharp.ArrowBack)
 }

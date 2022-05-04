@@ -1,5 +1,6 @@
 package com.idir.codebarscanner
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -28,19 +29,9 @@ import kotlinx.serialization.json.Json
 
 
 class MainActivity : ComponentActivity() {
-    private val context  = this
+    private lateinit var context : Context
 
-    private val handler = Handler(Looper.getMainLooper()) {
-        if(it.what == HttpManager.SUCCESS){
-            val resources = context.resources
-            Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
-        }
-        else{
-            val resources = context.resources
-            Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
-        }
-        return@Handler true
-    }
+    private lateinit var handler :Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +43,19 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun initApp(){
+        context = App.appInstance.applicationContext
+
+        handler = Handler(Looper.getMainLooper()) {
+            if(it.what == HttpManager.SUCCESS){
+                val resources = context.resources
+                Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
+            }
+            else{
+                val resources = context.resources
+                Toast.makeText(context, resources.getString(R.string.send_data_failed), Toast.LENGTH_LONG).show()
+            }
+            return@Handler true
+        }
         Provider.initApp(this)
         setContent {
             CodeBarScannerTheme {

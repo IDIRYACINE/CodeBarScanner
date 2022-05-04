@@ -3,15 +3,11 @@
 package com.idir.codebarscanner.infrastructure
 
 import android.content.Context
-import androidx.compose.runtime.mutableStateListOf
+import android.widget.Toast
 import com.idir.codebarscanner.application.CameraController
 import com.idir.codebarscanner.application.HomeController
 import com.idir.codebarscanner.application.SettingsController
-import com.idir.codebarscanner.data.BarcodeGroup
-import com.idir.codebarscanner.infrastructure.barcode.BarcodeAnalyser
-import com.idir.codebarscanner.infrastructure.barcode.BarcodeBroadcaster
-import com.idir.codebarscanner.infrastructure.barcode.IBarcodeBroadcaster
-import com.idir.codebarscanner.infrastructure.barcode.IBarcodeManager
+import com.idir.codebarscanner.infrastructure.barcode.*
 import com.idir.codebarscanner.infrastructure.barcode.manager.BarcodeManager
 
 
@@ -20,11 +16,14 @@ object Provider {
     val storageManager : StorageManager = StorageManager()
     lateinit var httpManager : HttpManager
     lateinit var barcodesManager :IBarcodeManager
+    lateinit var cameraAnalyser: ICameraAnalyser
+
     lateinit var homeController : HomeController
     lateinit var settingsController : SettingsController
     lateinit var cameraController : CameraController
 
-    val barcodeAnalyser : BarcodeAnalyser = BarcodeAnalyser()
+    lateinit var toaster : IBarcodeSubscriber
+
     val barcodeBroadcaster : IBarcodeBroadcaster = BarcodeBroadcaster()
 
     fun initApp(context: Context){
@@ -46,9 +45,26 @@ object Provider {
 
         homeController = HomeController(barcodesManager)
 
-
-        cameraController = CameraController(barcodeBroadcaster)
+        cameraController = CameraController(cameraAnalyser)
     }
 
+
+}
+
+class Toaster(private val context: Context) : IBarcodeSubscriber{
+
+    override fun getId(): String {
+       return ""
+    }
+
+    override fun notify(rawBarcode: String) {
+        Toast.makeText(context, rawBarcode, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun notify(rawBarcodes: List<String>) {
+        rawBarcodes.forEach {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }
