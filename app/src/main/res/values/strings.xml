@@ -15,6 +15,8 @@
     <string name="settings_header_auth">Header Auth</string>
     <string name="settings_vibration">Vibrate</string>
     <string name="settings_playSound">Play sound</string>
+    <string name="settings_scanDuplicateGroup">Duplicate Groups</string>
+    <string name="settings_scanDuplicateGroup_description">Allow duplicating groups with the same name</string>
     <string name="settings_scanDuplicate">Duplicate barcodes</string>
     <string name="settings_scanDuplicate_description">Scanning duplicate will increase it\'s count instead of registering a new one</string>
     <string name="settings_scanManually">Scan manually</string>
@@ -22,7 +24,10 @@
     <string name="settings_scanContinuous">Continuous scanning</string>
     <string name="settings_scanContinuous_description">Auto detect barcodes</string>
 
-
+    <!-- Settings About Section -->
+    <string name="settings_about">About</string>
+    <string name="settings_licenses">Licenses</string>
+    <string name="settings_version">App version</string>
 
     <!-- Buttons !-->
     <string name="save_button">Save</string>

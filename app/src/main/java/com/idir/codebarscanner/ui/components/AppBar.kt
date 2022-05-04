@@ -16,24 +16,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.idir.codebarscanner.R
-import com.idir.codebarscanner.ui.screens.SettingsActivity
-
-@Composable
-fun AppBar(
-    title : String,
-){
-    val context = LocalContext.current
-
-    TopAppBar(
-        title = { Text(text = title)} ,
-        backgroundColor = Color.Cyan,
-        actions = {
-                AppBarIcon(appBarAction = AppBarAction.Settings, action = {
-                    context.startActivity(Intent(context, SettingsActivity::class.java))
-                })
-        }
-    )
-}
 
 
 @Composable

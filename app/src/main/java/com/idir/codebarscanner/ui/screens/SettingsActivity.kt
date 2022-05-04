@@ -2,10 +2,13 @@ package com.idir.codebarscanner.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,50 +20,54 @@ import com.idir.codebarscanner.data.SettingsIcons
 import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.ui.components.SettingRow
 import com.idir.codebarscanner.ui.components.SettingSectionHeader
+import com.idir.codebarscanner.ui.components.barcodes.ManageCardPopup
 
 @Composable
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
     val settings = controller.settings
+    val openDialog = remember{ controller.popupCardState.isOpen}
+
+    if(openDialog.value){
+        ManageCardPopup(state = controller.popupCardState)
+    }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ){
-        GeneralSection(settings = settings)
-        ScanControlsSection(settings = settings)
+        GeneralSection(settings = settings,controller)
+        ScanControlsSection(settings = settings,controller)
         AboutSection(settings = settings)
     }
 }
 
-fun selfToggle(state: MutableState<Boolean>){
-    state.value = !state.value
+@Composable
+fun SelfSwitch(state: MutableState<Boolean>,onClick : ()->Unit = {}){
+    Switch(checked = state.value, onCheckedChange = { onClick() })
 }
 
 @Composable
-fun SelfSwitch(state: MutableState<Boolean>){
-    Switch(checked = state.value, enabled = false, onCheckedChange = {selfToggle(state)})
-}
-
-@Composable
-fun GeneralSection(settings: Settings){
+fun GeneralSection(settings: Settings,controller: SettingsController){
     SettingSectionHeader(title = R.string.settings_section_general)
 
     SettingRow(
         title = R.string.settings_host_url,
-        onClick = {},
+        onClick = {controller.showEditPopup(settings.host)},
         actionComposable = {},
     )
 
     SettingRow(
         title = R.string.settings_host_password,
-        onClick = {},
+        onClick = {controller.showEditPopup( settings.password)},
         actionComposable = {},
     )
 
     SettingRow(
         title = R.string.settings_host_username,
-        onClick = {},
+        onClick = {controller.showEditPopup(settings.username)},
         actionComposable = {},
     )
 
@@ -69,50 +76,53 @@ fun GeneralSection(settings: Settings){
 }
 
 @Composable
-fun ScanControlsSection(settings: Settings){
+fun ScanControlsSection(settings: Settings,controller:SettingsController){
     Divider(color= Color.LightGray, thickness = 1.dp)
     SettingSectionHeader(title = R.string.settings_section_ScanControls)
 
     SettingRow(
         title = R.string.settings_vibration,
         icon = SettingsIcons.Vibrate,
-        onClick = {selfToggle(settings.vibrate)},
-        actionComposable = { SelfSwitch(state = settings.vibrate) },
+        onClick = {controller.toggleVibration()},
+        actionComposable = { SelfSwitch(state = settings.vibrate, onClick = { controller.toggleVibration() }) },
     )
 
     SettingRow(
         title = R.string.settings_playSound,
         icon = SettingsIcons.PlaySound,
-        onClick = {selfToggle(settings.playSound)},
-        actionComposable = { SelfSwitch(state = settings.playSound) },
-    )
-
-    SettingRow(
-        title = R.string.settings_scanContinuous,
-        description = R.string.settings_scanContinuous_description,
-        icon = SettingsIcons.ContinuousScan,
-        onClick = {selfToggle(settings.continuousScan)},
-        actionComposable = { SelfSwitch(state = settings.continuousScan) },
+        onClick = {controller.togglePlaySound()},
+        actionComposable = { SelfSwitch(state = settings.playSound, onClick = {controller.togglePlaySound()}) },
     )
 
     SettingRow(
         title = R.string.settings_scanManually,
         description = R.string.settings_scanManually_description,
         icon = SettingsIcons.ManualScan,
-        onClick = {selfToggle(settings.manualScan)},
-        actionComposable = { SelfSwitch(state = settings.manualScan) },
+        onClick = {controller.toggleManualScan()},
+        actionComposable = { SelfSwitch(state = settings.manualScan,onClick = {controller.toggleManualScan()}) },
+    )
+
+    SettingRow(
+        title = R.string.settings_scanDuplicateGroup,
+        description = R.string.settings_scanDuplicateGroup_description,
+        icon = SettingsIcons.DuplicateScan,
+        onClick = {controller.toggleDuplicateBarcodeGroups()},
+        actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeGroups()}) },
     )
 
     SettingRow(
         title = R.string.settings_scanDuplicate,
         description = R.string.settings_scanDuplicate_description,
         icon = SettingsIcons.DuplicateScan,
-        onClick = {selfToggle(settings.duplicateScan)},
-        actionComposable = { SelfSwitch(state = settings.duplicateScan) },
+        onClick = {controller.toggleDuplicateBarcodeScan()},
+        actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeScan()}) },
     )
+
+
     Divider(color= Color.LightGray, thickness = 1.dp)
 }
 
 @Composable
-fun AboutSection(settings: Settings){}
+fun AboutSection(settings: Settings){
+}
 

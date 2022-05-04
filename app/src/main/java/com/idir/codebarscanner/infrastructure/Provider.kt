@@ -28,15 +28,21 @@ object Provider {
     val barcodeBroadcaster : IBarcodeBroadcaster = BarcodeBroadcaster()
 
     fun initApp(context: Context){
-        settingsController = SettingsController()
-        settingsController.load(context)
-        httpManager = HttpManager(settingsController.settings)
 
         val tempManager = BarcodeManager()
         tempManager.load(context, storageManager)
         tempManager.setBarcodeDuplicateMode(false)
         tempManager.setGroupDuplicateMode(false)
         barcodesManager = tempManager
+
+        cameraAnalyser = CameraAnalyser()
+
+        toaster = Toaster(context)
+        barcodeBroadcaster.subscribeToBarcodeStream(toaster)
+
+        settingsController = SettingsController()
+        settingsController.load(context)
+        httpManager = HttpManager(settingsController.settings)
 
         homeController = HomeController(barcodesManager)
 

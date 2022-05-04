@@ -10,6 +10,8 @@ interface IBarcodeBroadcaster {
     fun notifyBarcodes(rawBarcodes : List<String>)
     fun subscribeToBarcodeStream(subscriber : IBarcodeSubscriber)
     fun unsubscribeFromBarcodeStream(subscriber : IBarcodeSubscriber)
+    fun registerOnNotifyCommand(command:ICommand)
+    fun unregisterOnNotifyCommand(command: ICommand)
 }
 
 interface IBarcodeSubscriber{

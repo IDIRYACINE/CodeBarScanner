@@ -2,15 +2,14 @@ package com.idir.codebarscanner.application
 
 import android.content.Context
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.idir.codebarscanner.R
+import com.idir.codebarscanner.data.CardPopupState
 import com.idir.codebarscanner.data.Settings
-import com.idir.codebarscanner.infrastructure.StorageManager
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import com.idir.codebarscanner.infrastructure.Provider
-import kotlin.properties.Delegates
+import com.idir.codebarscanner.infrastructure.barcode.*
+import com.idir.codebarscanner.infrastructure.barcode.commands.ICommand
+import com.idir.codebarscanner.infrastructure.barcode.commands.PlaySoundCommand
+import com.idir.codebarscanner.infrastructure.barcode.commands.VibrateCommand
 
 
 class SettingsController : ViewModel() {
@@ -18,21 +17,127 @@ class SettingsController : ViewModel() {
     lateinit var settings : Settings
         private set
 
+    lateinit var popupCardState: CardPopupState
 
-    fun toggleDuplicateScan(){}
+    private lateinit var editableProperty : MutableState<String>
 
-    fun toggleContinuousScan(){}
+    private lateinit var cameraAnalyser: ICameraAnalyser
 
-    fun toggleManualScan(){}
+    private lateinit var googleBarcodeAnalyser :IBarcodeAnalyser
 
-    fun togglePlaySound(){}
+    private lateinit var barcodeManager : IBarcodeManager
+
+    private lateinit var barcodeBroadcaster: IBarcodeBroadcaster
+
+    private lateinit var playSoundCommand : ICommand
+
+    private lateinit var vibrateCommand : ICommand
+
+
+    fun toggleDuplicateBarcodeGroups(){
+        toggleBoolean(settings.duplicateGroup)
+        barcodeManager.setGroupDuplicateMode(settings.duplicateGroup.value)
+    }
+
+    fun toggleDuplicateBarcodeScan(){
+        toggleBoolean(settings.duplicateScan)
+        barcodeManager.setBarcodeDuplicateMode(settings.duplicateScan.value)
+    }
+
+
+    fun toggleManualScan(){
+        val value = toggleBoolean(settings.manualScan)
+
+        if(value){
+            googleBarcodeAnalyser.setManualMode()
+        }
+        else{
+            googleBarcodeAnalyser.setContinuousMode()
+        }
+
+    }
+
+    fun togglePlaySound(){
+        toggleBoolean(settings.playSound)
+        if(settings.playSound.value){
+            barcodeBroadcaster.registerOnNotifyCommand(playSoundCommand)
+        }
+        else{
+            barcodeBroadcaster.unregisterOnNotifyCommand(playSoundCommand)
+        }
+    }
 
     fun toggleVibration(){
+        toggleBoolean(settings.vibrate)
+        if(settings.vibrate.value){
+            barcodeBroadcaster.registerOnNotifyCommand(vibrateCommand)
+        }
+        else{
+            barcodeBroadcaster.unregisterOnNotifyCommand(vibrateCommand)
+        }
+    }
 
+    fun showEditPopup(property:MutableState<String>){
+        editableProperty = property
+        popupCardState.isOpen.value = true
+    }
+
+
+    private fun toggleBoolean(value:MutableState<Boolean>) : Boolean{
+        val newValue = !value.value
+        value.value = newValue
+        return newValue
     }
 
     fun load(context: Context) {
         settings = Provider.storageManager.loadSettings(context)
+
+        playSoundCommand = PlaySoundCommand()
+        vibrateCommand = VibrateCommand(context)
+
+        setupInitialState()
+    }
+
+    private fun setupInitialState(){
+
+        barcodeBroadcaster = Provider.barcodeBroadcaster
+
+        barcodeManager = Provider.barcodesManager
+
+        cameraAnalyser = Provider.cameraAnalyser
+
+        popupCardState = CardPopupState(
+            open = false,
+            onConfirmCreate = {
+                editableProperty.value = it
+                popupCardState.isOpen.value = false
+            },
+            onConfirmEdit = {
+                editableProperty.value = it
+                popupCardState.isOpen.value = false
+            },
+            onCancel = {popupCardState.isOpen.value = false }
+        )
+
+        if(settings.playSound.value){
+            barcodeBroadcaster.registerOnNotifyCommand(playSoundCommand)
+        }
+
+        if(settings.vibrate.value){
+            barcodeBroadcaster.registerOnNotifyCommand(vibrateCommand)
+        }
+
+        val barcodeAnalyser = GoogleBarcodeAnalyser()
+        googleBarcodeAnalyser = barcodeAnalyser
+        cameraAnalyser.setBarcodeAnalyser(barcodeAnalyser,barcodeAnalyser)
+
+        if(!settings.manualScan.value){
+            googleBarcodeAnalyser.setContinuousMode()
+        }
+        else{
+            googleBarcodeAnalyser.setManualMode()
+        }
+
     }
 
 
