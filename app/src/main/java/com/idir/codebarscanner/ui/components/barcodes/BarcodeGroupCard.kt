@@ -24,9 +24,7 @@ fun BarcodeGroupCard(group : BarcodeGroup, controller:HomeController){
     val context = LocalContext.current
 
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
+        modifier = Modifier.padding(15.dp)
             .clickable {
                 controller.startGroupContentActivity(context,group)
             },
@@ -40,7 +38,8 @@ fun BarcodeGroupCard(group : BarcodeGroup, controller:HomeController){
             Text(text = group.name.value)
 
             Row(
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.End,
+                modifier = Modifier.fillMaxWidth()
             ) {
               CardAction(action = ActionsIcons.Edit, onClick = {
                   controller.setEditGroup(group)

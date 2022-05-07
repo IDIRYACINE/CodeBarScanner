@@ -7,9 +7,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.SettingsIcons
@@ -19,38 +21,39 @@ import com.idir.codebarscanner.data.VoidCallback
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SettingRow(
-    title:Int,
-    description :Int? = null,
+    title:String,
+    description :String? = null,
     icon :SettingsIcons? = null,
     onClick : VoidCallback,
     actionComposable:@Composable () -> Unit,
     proFeature : Boolean = false,
     space: Int? = 10,
-    padding: Int? = 16
+    padding: Int? = 16,
 ){
         Row(
-            modifier = Modifier.clickable { onClick() }.fillMaxWidth().padding(padding!!.dp),
+            modifier = Modifier
+                .clickable { onClick() }
+                .fillMaxWidth()
+                .padding(padding!!.dp),
             horizontalArrangement = Arrangement.Center
         ){
 
-            if (icon != null){
-            Icon(imageVector = icon.icon , contentDescription = null)
-            }
-
-            Spacer(modifier = Modifier.width(space!!.dp))
-
-            Column {
-                Text(text = stringResource(id = title) ,fontWeight = FontWeight.Bold)
-                if(description != null){
-                    Text(text = stringResource(id = description) , fontWeight = FontWeight.ExtraLight)
+            Box(modifier = Modifier.weight(2f)) {
+                if (icon != null) {
+                    Icon(imageVector = icon.icon, contentDescription = null)
                 }
             }
 
-            if(proFeature){
-                ProFeatureBadget()
+            Column (modifier= Modifier.weight(8f)){
+                Text(text =  title )
+                if(description != null){
+                    Text(text =  description , fontWeight = FontWeight.ExtraLight , color = Color.LightGray)
+                }
             }
 
-            actionComposable()
+            Box(modifier = Modifier.weight(2f)){
+                actionComposable()
+            }
 
         }
 
@@ -64,6 +67,5 @@ fun ProFeatureBadget(){
 @Composable
 fun SettingSectionHeader(title:Int){
     Text(text = stringResource(id = title),
-        fontWeight = FontWeight.SemiBold,
         color = colorResource(id = R.color.settings_section))
 }

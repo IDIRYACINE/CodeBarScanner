@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.idir.codebarscanner.data.CardPopupState
 import com.idir.codebarscanner.data.Settings
 import com.idir.codebarscanner.infrastructure.Provider
+import com.idir.codebarscanner.infrastructure.ResourcesLoader
 import com.idir.codebarscanner.infrastructure.barcode.*
 import com.idir.codebarscanner.infrastructure.barcode.commands.ICommand
 import com.idir.codebarscanner.infrastructure.barcode.commands.PlaySoundCommand
@@ -33,6 +34,8 @@ class SettingsController : ViewModel() {
 
     private lateinit var vibrateCommand : ICommand
 
+    private lateinit var resourceLoader : ResourcesLoader
+
 
     fun toggleDuplicateBarcodeGroups(){
         toggleBoolean(settings.duplicateGroup)
@@ -44,7 +47,6 @@ class SettingsController : ViewModel() {
         barcodeManager.setBarcodeDuplicateMode(settings.duplicateScan.value)
     }
 
-
     fun toggleManualScan(){
         val value = toggleBoolean(settings.manualScan)
 
@@ -55,6 +57,10 @@ class SettingsController : ViewModel() {
             googleBarcodeAnalyser.setContinuousMode()
         }
 
+    }
+
+    fun loadStringResource(resourceId:Int) : String{
+        return resourceLoader.loadStringResource(resourceId)
     }
 
     fun togglePlaySound(){
@@ -77,8 +83,10 @@ class SettingsController : ViewModel() {
         }
     }
 
-    fun showEditPopup(property:MutableState<String>){
+    fun showEditPopup(property:MutableState<String>,title:Int){
         editableProperty = property
+        popupCardState.title.value = title
+        popupCardState.value.value = property.value
         popupCardState.isOpen.value = true
     }
 
@@ -105,6 +113,8 @@ class SettingsController : ViewModel() {
         barcodeManager = Provider.barcodesManager
 
         cameraAnalyser = Provider.cameraAnalyser
+
+        resourceLoader = Provider.resourceLoader
 
         popupCardState = CardPopupState(
             open = false,

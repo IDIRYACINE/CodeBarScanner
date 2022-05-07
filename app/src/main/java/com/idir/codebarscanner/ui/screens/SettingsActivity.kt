@@ -54,20 +54,20 @@ fun GeneralSection(settings: Settings,controller: SettingsController){
     SettingSectionHeader(title = R.string.settings_section_general)
 
     SettingRow(
-        title = R.string.settings_host_url,
-        onClick = {controller.showEditPopup(settings.host)},
+        title = controller.loadStringResource(R.string.settings_host_url),
+        onClick = {controller.showEditPopup(settings.host,R.string.popup_host)},
         actionComposable = {},
     )
 
     SettingRow(
-        title = R.string.settings_host_password,
-        onClick = {controller.showEditPopup( settings.password)},
+        title = controller.loadStringResource(R.string.settings_host_password),
+        onClick = { controller.showEditPopup( settings.password,R.string.popup_password)},
         actionComposable = {},
     )
 
     SettingRow(
-        title = R.string.settings_host_username,
-        onClick = {controller.showEditPopup(settings.username)},
+        title = controller.loadStringResource(R.string.settings_host_username),
+        onClick = {controller.showEditPopup(settings.username,R.string.popup_username)},
         actionComposable = {},
     )
 
@@ -81,38 +81,38 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
     SettingSectionHeader(title = R.string.settings_section_ScanControls)
 
     SettingRow(
-        title = R.string.settings_vibration,
+        title = controller.loadStringResource(R.string.settings_vibration),
         icon = SettingsIcons.Vibrate,
         onClick = {controller.toggleVibration()},
         actionComposable = { SelfSwitch(state = settings.vibrate, onClick = { controller.toggleVibration() }) },
     )
 
     SettingRow(
-        title = R.string.settings_playSound,
+        title = controller.loadStringResource(R.string.settings_playSound),
         icon = SettingsIcons.PlaySound,
         onClick = {controller.togglePlaySound()},
         actionComposable = { SelfSwitch(state = settings.playSound, onClick = {controller.togglePlaySound()}) },
     )
 
     SettingRow(
-        title = R.string.settings_scanManually,
-        description = R.string.settings_scanManually_description,
+        title = controller.loadStringResource(R.string.settings_scanManually),
+        description = controller.loadStringResource(R.string.settings_scanManually_description),
         icon = SettingsIcons.ManualScan,
         onClick = {controller.toggleManualScan()},
         actionComposable = { SelfSwitch(state = settings.manualScan,onClick = {controller.toggleManualScan()}) },
     )
 
     SettingRow(
-        title = R.string.settings_scanDuplicateGroup,
-        description = R.string.settings_scanDuplicateGroup_description,
+        title = controller.loadStringResource(R.string.settings_scanDuplicateGroup),
+        description = controller.loadStringResource(R.string.settings_scanDuplicateGroup_description),
         icon = SettingsIcons.DuplicateScan,
         onClick = {controller.toggleDuplicateBarcodeGroups()},
         actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeGroups()}) },
     )
 
     SettingRow(
-        title = R.string.settings_scanDuplicate,
-        description = R.string.settings_scanDuplicate_description,
+        title = controller.loadStringResource(R.string.settings_scanDuplicate),
+        description = controller.loadStringResource(R.string.settings_scanDuplicate_description),
         icon = SettingsIcons.DuplicateScan,
         onClick = {controller.toggleDuplicateBarcodeScan()},
         actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeScan()}) },
@@ -125,4 +125,3 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
 @Composable
 fun AboutSection(settings: Settings){
 }
-

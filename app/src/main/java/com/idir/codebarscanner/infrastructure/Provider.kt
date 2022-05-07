@@ -15,15 +15,23 @@ object Provider {
 
     val storageManager : StorageManager = StorageManager()
     lateinit var httpManager : HttpManager
+        private set
     lateinit var barcodesManager :IBarcodeManager
+        private set
     lateinit var cameraAnalyser: ICameraAnalyser
+        private set
 
     lateinit var homeController : HomeController
+        private set
     lateinit var settingsController : SettingsController
+        private set
     lateinit var cameraController : CameraController
+        private set
 
     lateinit var toaster : IBarcodeSubscriber
-
+        private set
+    lateinit var resourceLoader:ResourcesLoader
+        private set
     val barcodeBroadcaster : IBarcodeBroadcaster = BarcodeBroadcaster()
 
     fun initApp(context: Context){
@@ -33,6 +41,8 @@ object Provider {
         tempManager.setBarcodeDuplicateMode(false)
         tempManager.setGroupDuplicateMode(false)
         barcodesManager = tempManager
+
+        resourceLoader = ResourcesLoader(context)
 
         cameraAnalyser = CameraAnalyser()
 
