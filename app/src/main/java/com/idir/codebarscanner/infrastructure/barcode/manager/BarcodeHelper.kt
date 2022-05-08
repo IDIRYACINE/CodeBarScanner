@@ -2,7 +2,6 @@ package com.idir.codebarscanner.infrastructure.barcode.manager
 
 import com.idir.codebarscanner.data.Barcode
 import com.idir.codebarscanner.data.BarcodeGroup
-import com.idir.codebarscanner.data.BarcodeGroupEntry
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeHelper
 import java.util.*
 
@@ -50,6 +49,6 @@ class BarcodeHelper( private val register:MutableMap<String,Int>,
     }
 
     private fun timeStamp(): String {
-        return Calendar.getInstance().time.toString()
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} +  ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
     }
 }

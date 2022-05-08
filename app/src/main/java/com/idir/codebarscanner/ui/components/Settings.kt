@@ -6,9 +6,11 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Constraints
@@ -40,7 +42,7 @@ fun SettingRow(
 
             Box(modifier = Modifier.weight(2f)) {
                 if (icon != null) {
-                    Icon(imageVector = icon.icon, contentDescription = null)
+                    Icon(painter = painterResource(id = icon.icon), contentDescription = null)
                 }
             }
 

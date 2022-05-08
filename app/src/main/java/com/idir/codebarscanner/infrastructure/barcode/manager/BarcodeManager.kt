@@ -11,12 +11,10 @@ import com.idir.codebarscanner.infrastructure.barcode.IBarcodeHelper
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeManager
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
 
 class BarcodeManager : IBarcodeManager {
-    private val id = "BarcodeManager"
 
     /* Data Structures */
     private lateinit var register:MutableMap<String,Int>

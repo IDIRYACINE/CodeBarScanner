@@ -1,7 +1,6 @@
 package com.idir.codebarscanner.ui.components
 
 import android.app.Activity
-import android.content.Intent
 import androidx.annotation.StringRes
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,6 +15,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.idir.codebarscanner.R
+import com.idir.codebarscanner.ui.theme.Green500
 
 
 @Composable
@@ -25,8 +25,8 @@ fun SecondaryAppBar(
     val context = LocalContext.current
 
     TopAppBar(
-        title = { Text(text = title)} ,
-        backgroundColor = Color.Cyan,
+        title = { Text(text = title , color = Color.White)} ,
+        backgroundColor = Green500,
         navigationIcon = {
             AppBarIcon(
                 appBarAction = AppBarAction.Backbutton,
@@ -42,7 +42,7 @@ fun SecondaryAppBar(
 @Composable
 fun AppBarIcon(appBarAction: AppBarAction, action:() ->Unit ){
     IconButton(onClick = { action() }) {
-        Icon(imageVector = appBarAction.icon ,contentDescription = stringResource(id = appBarAction.label))
+        Icon(imageVector = appBarAction.icon ,contentDescription = stringResource(id = appBarAction.label),tint=Color.White)
     }
 }
 

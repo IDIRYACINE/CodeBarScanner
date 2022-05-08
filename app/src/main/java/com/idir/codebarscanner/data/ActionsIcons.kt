@@ -2,7 +2,6 @@ package com.idir.codebarscanner.data
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.sharp.*
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -16,15 +15,16 @@ sealed class ActionsIcons(@StringRes val label:Int, var icon:ImageVector){
 }
 
 
-sealed class SettingsIcons(var icon: ImageVector){
-    object Vibrate : SettingsIcons(Icons.Sharp.Delete)
-    object PlaySound : SettingsIcons(Icons.Sharp.Delete)
-    object ContinuousScan : SettingsIcons(Icons.Sharp.Delete)
-    object ManualScan : SettingsIcons(Icons.Sharp.Delete)
-    object DuplicateScan : SettingsIcons(Icons.Sharp.Delete)
+sealed class SettingsIcons(var icon: Int){
+    object Vibrate : SettingsIcons(R.drawable.ic_vibrate)
+    object PlaySound : SettingsIcons(R.drawable.ic_sound)
+    object ManualScan : SettingsIcons(R.drawable.ic_hand)
+    object DuplicateBarcode : SettingsIcons(R.drawable.ic_repeat_barcode)
+    object DuplicateGroup : SettingsIcons(R.drawable.ic_repeat_group)
+
 }
 
-sealed class CameraIcons(var icon: ImageVector){
-    object Flash : CameraIcons(Icons.Sharp.Info)
-    object Analyse : CameraIcons(Icons.Filled.AccountCircle)
+sealed class CameraIcons(var icon: Int){
+    object Flash : CameraIcons(R.drawable.ic_flash)
+    object Analyse : CameraIcons(R.drawable.ic_recording_filled)
 }

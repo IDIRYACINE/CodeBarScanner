@@ -6,6 +6,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
@@ -21,6 +22,8 @@ import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.ui.components.SettingRow
 import com.idir.codebarscanner.ui.components.SettingSectionHeader
 import com.idir.codebarscanner.ui.components.barcodes.ManageCardPopup
+import com.idir.codebarscanner.ui.theme.Green200
+import com.idir.codebarscanner.ui.theme.Green500
 
 @Composable
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
@@ -46,7 +49,11 @@ fun SettingsScreen(controller : SettingsController = Provider.settingsController
 
 @Composable
 fun SelfSwitch(state: MutableState<Boolean>,onClick : ()->Unit = {}){
-    Switch(checked = state.value, onCheckedChange = { onClick() })
+    Switch(checked = state.value,
+        colors = SwitchDefaults.colors(
+        checkedThumbColor = Green500,
+        checkedTrackColor = Green200
+    ), onCheckedChange = { onClick() })
 }
 
 @Composable
@@ -55,19 +62,22 @@ fun GeneralSection(settings: Settings,controller: SettingsController){
 
     SettingRow(
         title = controller.loadStringResource(R.string.settings_host_url),
+        description = settings.host.value,
         onClick = {controller.showEditPopup(settings.host,R.string.popup_host)},
         actionComposable = {},
     )
 
     SettingRow(
-        title = controller.loadStringResource(R.string.settings_host_password),
-        onClick = { controller.showEditPopup( settings.password,R.string.popup_password)},
+        title = controller.loadStringResource(R.string.settings_host_username),
+        description = settings.username.value,
+        onClick = {controller.showEditPopup(settings.username,R.string.popup_username)},
         actionComposable = {},
     )
 
     SettingRow(
-        title = controller.loadStringResource(R.string.settings_host_username),
-        onClick = {controller.showEditPopup(settings.username,R.string.popup_username)},
+        title = controller.loadStringResource(R.string.settings_host_password),
+        description = settings.password.value,
+        onClick = { controller.showEditPopup( settings.password,R.string.popup_password)},
         actionComposable = {},
     )
 
@@ -105,7 +115,7 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
     SettingRow(
         title = controller.loadStringResource(R.string.settings_scanDuplicateGroup),
         description = controller.loadStringResource(R.string.settings_scanDuplicateGroup_description),
-        icon = SettingsIcons.DuplicateScan,
+        icon = SettingsIcons.DuplicateGroup,
         onClick = {controller.toggleDuplicateBarcodeGroups()},
         actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeGroups()}) },
     )
@@ -113,7 +123,7 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
     SettingRow(
         title = controller.loadStringResource(R.string.settings_scanDuplicate),
         description = controller.loadStringResource(R.string.settings_scanDuplicate_description),
-        icon = SettingsIcons.DuplicateScan,
+        icon = SettingsIcons.DuplicateBarcode,
         onClick = {controller.toggleDuplicateBarcodeScan()},
         actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeScan()}) },
     )
@@ -124,4 +134,5 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
 
 @Composable
 fun AboutSection(settings: Settings){
+
 }

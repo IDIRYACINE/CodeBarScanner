@@ -63,8 +63,8 @@ fun BottomNavigationBar (navController : NavController){
                         item.icon, contentDescription = item.screen_route)
                 },
                 label = { Text(text = stringResource(id = item.title), fontSize = 9.sp) },
-                selectedContentColor = Color.Black,
-                unselectedContentColor = Color.Black.copy(0.4f),
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.White.copy(0.4f),
                 alwaysShowLabel = true,
                 onClick = {
                     navController.navigate(item.screen_route) {

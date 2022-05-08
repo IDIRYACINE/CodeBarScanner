@@ -1,13 +1,14 @@
 package com.idir.codebarscanner.ui.components.barcodes
 
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.res.stringResource
 import com.idir.codebarscanner.data.ActionsIcons
 import com.idir.codebarscanner.data.VoidCallback
-import androidx.compose.material.Switch
+import androidx.compose.ui.graphics.Color
 import com.idir.codebarscanner.data.ToggleCallback
+import com.idir.codebarscanner.ui.theme.Green200
+import com.idir.codebarscanner.ui.theme.Green500
 
 
 @Composable
@@ -25,8 +26,13 @@ fun ToggleAction(
                  ){
 
     val isActive = remember {active}
+
     Switch(
         checked = isActive.value,
+        colors = SwitchDefaults.colors(
+            checkedThumbColor = Green500,
+            checkedTrackColor = Green200
+        ),
         onCheckedChange = {
             isActive.value = it
             onClick(it)

@@ -29,7 +29,7 @@ class DuplicateBarcodeHelper(private val register:MutableMap<String,Int>,
     }
 
     private fun timeStamp(): String {
-        return Calendar.getInstance().time.toString()
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} +  ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
     }
 
 }
