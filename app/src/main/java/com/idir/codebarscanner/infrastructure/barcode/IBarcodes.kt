@@ -58,6 +58,9 @@ interface IBarcodeManager{
     fun toggleGroup(group: BarcodeGroup,value: Boolean)
     fun encodeToJson() : String
     fun encodeActiveToJson() : String
+    fun clearAll()
+    fun clearActiveGroups()
+    fun clearGroup(group:BarcodeGroup)
 }
 
 interface  IBarcodeGroupHelper{

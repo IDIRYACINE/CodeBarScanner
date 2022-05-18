@@ -22,6 +22,7 @@ data class Settings(val host:MutableState<String>  = mutableStateOf(""),
                     val playSound:MutableState<Boolean> = mutableStateOf(false),
                     val manualScan : MutableState<Boolean> = mutableStateOf(false),
                     val duplicateGroup : MutableState<Boolean> = mutableStateOf(false),
-                    val duplicateScan : MutableState<Boolean> = mutableStateOf(false)
+                    val duplicateScan : MutableState<Boolean> = mutableStateOf(false),
+                    val clearSend : MutableState<Boolean> = mutableStateOf(false)
 
 )

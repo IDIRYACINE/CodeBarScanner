@@ -3,7 +3,6 @@ package com.idir.codebarscanner.infrastructure.barcode.manager
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.idir.codebarscanner.data.BarcodeGroup
-import com.idir.codebarscanner.data.BarcodeGroupEntry
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeBroadcaster
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeGroupHelper
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeHelper

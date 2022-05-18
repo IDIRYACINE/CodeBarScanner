@@ -1,13 +1,13 @@
 package com.idir.codebarscanner.infrastructure
 
-import android.content.Context
 import android.os.Handler
 import android.os.Message
-import android.widget.Toast
-import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.Settings
-import okhttp3.*
+import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 
@@ -17,7 +17,6 @@ class HttpManager(
 
     companion object{
         const val SUCCESS = 0
-        const val FAIL = -1
     }
 
     private val jsonType : MediaType = "application/json; charset=utf-8".toMediaType()
@@ -45,6 +44,9 @@ class HttpManager(
                 .post(body)
                 .build()
             client.newCall(request).execute().use { response ->
+                if(settings.clearSend.value){
+                    Provider.barcodesManager.clearActiveGroups()
+                }
                 return response.code }
             }
             catch (exceptions:Exception){

@@ -11,19 +11,10 @@ import kotlinx.serialization.json.encodeToJsonElement
 
 @Serializable
 data class Barcode (
-    val value:String ,
-    val timestamp : String,
+    val value:String,
+    var timestamp : String,
     var count : Int
-    ){
-    companion object{
-        fun toMap(barcode:Barcode): JsonMap{
-            return mapOf(
-                "value" to Json.encodeToJsonElement(barcode.value),
-                "timestamp" to Json.encodeToJsonElement(barcode.timestamp)
-            )
-        }
-    }
-}
+    )
 
 
 @Serializable
@@ -32,28 +23,9 @@ data class BarcodeGroup(
     val name:MutableState<String> ,
     val barcodes:MutableMap<String,Barcode>,
     val isActive : MutableState<Boolean>
-    ) {
-    companion object{
-        fun toMap(group : BarcodeGroup):JsonMap {
-            val temp = mutableListOf<JsonMap>()
+    )
 
-           /* group.barcodes.forEach{
-                barcode -> temp.add(barcode)
-            }*/
 
-            val name = Json.encodeToJsonElement(group.name.value)
-
-            return mapOf(
-                "name" to name,
-                "barcodes" to Json.encodeToJsonElement(temp)
-            )
-        }
-
-    }
-
-}
-
-data class BarcodeGroupEntry(val id:String, val name: MutableState<String>,val active:MutableState<Boolean>)
 
 
 

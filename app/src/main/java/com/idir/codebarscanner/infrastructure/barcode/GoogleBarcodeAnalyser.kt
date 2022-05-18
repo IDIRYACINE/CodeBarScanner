@@ -62,7 +62,6 @@ class GoogleBarcodeAnalyser : ImageAnalysis.Analyzer, IBarcodeAnalyser {
             timeStampHolder.currentTimestamp = System.currentTimeMillis()
             if(isActive.value){
                 enabled = timeStampHolder.minScreenshotIntervalPassed()
-                Log.wtf("IDIR", "$timeStampHolder.currentTimestamp : $timeStampHolder.lastAnalyzedTimeStamp")
             }
 
             return enabled

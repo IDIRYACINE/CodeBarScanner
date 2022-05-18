@@ -2,6 +2,7 @@ package com.idir.codebarscanner.ui.screens
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -25,6 +26,11 @@ import com.idir.codebarscanner.ui.components.barcodes.ManageCardPopup
 import com.idir.codebarscanner.ui.theme.Green200
 import com.idir.codebarscanner.ui.theme.Green500
 
+object SettingsScreenConstants{
+    val dividerThickness  = 1.dp
+    const val sectionTitleTopPadding = 10
+}
+
 @Composable
 fun SettingsScreen(controller : SettingsController = Provider.settingsController){
     val settings = controller.settings
@@ -41,9 +47,9 @@ fun SettingsScreen(controller : SettingsController = Provider.settingsController
         horizontalAlignment = Alignment.CenterHorizontally
 
     ){
-        GeneralSection(settings = settings,controller)
-        ScanControlsSection(settings = settings,controller)
-        AboutSection(settings = settings)
+        GeneralSection(settings = settings,controller = controller)
+        ScanControlsSection(settings = settings,controller = controller)
+        AboutSection(controller = controller)
     }
 }
 
@@ -58,7 +64,7 @@ fun SelfSwitch(state: MutableState<Boolean>,onClick : ()->Unit = {}){
 
 @Composable
 fun GeneralSection(settings: Settings,controller: SettingsController){
-    SettingSectionHeader(title = R.string.settings_section_general)
+    SettingSectionHeader(title = R.string.settings_section_general,padding=SettingsScreenConstants.sectionTitleTopPadding)
 
     SettingRow(
         title = controller.loadStringResource(R.string.settings_host_url),
@@ -81,14 +87,14 @@ fun GeneralSection(settings: Settings,controller: SettingsController){
         actionComposable = {},
     )
 
-    Divider(color= Color.LightGray, thickness = 1.dp)
+    Divider(color= Color.LightGray, thickness = SettingsScreenConstants.dividerThickness)
 
 }
 
 @Composable
 fun ScanControlsSection(settings: Settings,controller:SettingsController){
-    Divider(color= Color.LightGray, thickness = 1.dp)
-    SettingSectionHeader(title = R.string.settings_section_ScanControls)
+    Divider(color= Color.LightGray, thickness =SettingsScreenConstants.dividerThickness)
+    SettingSectionHeader(title = R.string.settings_section_scanControls,padding=SettingsScreenConstants.sectionTitleTopPadding)
 
     SettingRow(
         title = controller.loadStringResource(R.string.settings_vibration),
@@ -117,7 +123,7 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
         description = controller.loadStringResource(R.string.settings_scanDuplicateGroup_description),
         icon = SettingsIcons.DuplicateGroup,
         onClick = {controller.toggleDuplicateBarcodeGroups()},
-        actionComposable = { SelfSwitch(state = settings.duplicateScan, onClick = {controller.toggleDuplicateBarcodeGroups()}) },
+        actionComposable = { SelfSwitch(state = settings.duplicateGroup, onClick = {controller.toggleDuplicateBarcodeGroups()}) },
     )
 
     SettingRow(
@@ -129,10 +135,27 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
     )
 
 
-    Divider(color= Color.LightGray, thickness = 1.dp)
+    SettingRow(
+        title = controller.loadStringResource(R.string.settings_clearSend),
+        description = controller.loadStringResource(R.string.settings_clearSend_description),
+        icon = SettingsIcons.Clear,
+        onClick = {controller.toggleClearSend()},
+        actionComposable = { SelfSwitch(state = settings.clearSend, onClick = {controller.toggleClearSend()}) },
+    )
+
+
+    Divider(color= Color.LightGray, thickness = SettingsScreenConstants.dividerThickness)
 }
 
 @Composable
-fun AboutSection(settings: Settings){
+fun AboutSection(controller:SettingsController){
+    Divider(color= Color.LightGray, thickness = SettingsScreenConstants.dividerThickness)
+    SettingSectionHeader(title = R.string.settings_section_about, padding = SettingsScreenConstants.sectionTitleTopPadding)
 
+    SettingRow(
+        title = controller.loadStringResource(R.string.settings_version),
+        description = controller.getAppVersion(),
+        onClick = {},
+        actionComposable = { controller.showOnPlayStore()},
+    )
 }

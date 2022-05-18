@@ -3,15 +3,20 @@
 package com.idir.codebarscanner.infrastructure
 
 import android.content.Context
+import android.os.Handler
 import android.widget.Toast
 import com.idir.codebarscanner.application.CameraController
 import com.idir.codebarscanner.application.HomeController
 import com.idir.codebarscanner.application.SettingsController
 import com.idir.codebarscanner.infrastructure.barcode.*
 import com.idir.codebarscanner.infrastructure.barcode.manager.BarcodeManager
+import com.idir.codebarscanner.infrastructure.licenses.LicensesManager
 
 
 object Provider {
+
+    lateinit var licenseManager: LicensesManager
+        private set
 
     val storageManager : StorageManager = StorageManager()
     lateinit var httpManager : HttpManager
@@ -34,7 +39,7 @@ object Provider {
         private set
     val barcodeBroadcaster : IBarcodeBroadcaster = BarcodeBroadcaster()
 
-    fun initApp(context: Context){
+    fun initApp(context: Context,handler : Handler){
 
         val tempManager = BarcodeManager()
         tempManager.load(context, storageManager)
@@ -53,9 +58,11 @@ object Provider {
         settingsController.load(context)
         httpManager = HttpManager(settingsController.settings)
 
-        homeController = HomeController(barcodesManager)
+        homeController = HomeController(barcodesManager,handler)
 
         cameraController = CameraController(cameraAnalyser)
+
+        licenseManager = LicensesManager(resourceLoader)
     }
 
 

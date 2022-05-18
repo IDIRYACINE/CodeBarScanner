@@ -32,7 +32,7 @@ import com.idir.codebarscanner.ui.screens.*
 fun NavigationGraph(navController: NavHostController,handler: Handler) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
-            HomeScreen(handler = handler)
+            HomeScreen()
         }
         composable(BottomNavItem.Scan.screen_route) {
             CameraScreen()

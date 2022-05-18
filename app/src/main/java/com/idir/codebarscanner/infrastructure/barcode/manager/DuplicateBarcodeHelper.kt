@@ -10,13 +10,13 @@ class DuplicateBarcodeHelper(private val register:MutableMap<String,Int>,
                              private val editGroup:BarcodeGroup?) : IBarcodeHelper {
 
     override fun add(rawBarcode: String) {
-        activeGroups.forEach { it.barcodes.put(rawBarcode, Barcode(rawBarcode, timeStamp(),0)) }
+        activeGroups.forEach { it.barcodes[rawBarcode] = Barcode(rawBarcode, timeStamp(),1) }
     }
 
     override fun addAll(rawBarcodes: List<String>) {
         val timeStamp = timeStamp()
         rawBarcodes.forEach {
-            activeGroups.forEach { group -> group.barcodes.put(it,Barcode(it,timeStamp,0)) }
+            activeGroups.forEach { group -> group.barcodes.put(it,Barcode(it,timeStamp,1)) }
         }
 
 
@@ -29,7 +29,7 @@ class DuplicateBarcodeHelper(private val register:MutableMap<String,Int>,
     }
 
     private fun timeStamp(): String {
-        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} +  ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
     }
 
 }

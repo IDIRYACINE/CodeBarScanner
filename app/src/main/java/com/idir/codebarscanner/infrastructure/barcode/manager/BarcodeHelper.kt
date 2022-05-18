@@ -27,7 +27,7 @@ class BarcodeHelper( private val register:MutableMap<String,Int>,
         val key = group.id + barcode.value
         val count = register[key]!! - 1
 
-        if(count < 0){
+        if(count < 1){
             register.remove(key)
         }
 
@@ -38,17 +38,19 @@ class BarcodeHelper( private val register:MutableMap<String,Int>,
         val key = group.id + rawBarcode
 
         if(register.containsKey(key)){
-            val count = register[key]!! + 1
-            group.barcodes[rawBarcode]!!.count = count
+            val count = register[key]!!   + 1
+
+            group.barcodes[rawBarcode]?.count = count
+            group.barcodes[rawBarcode]?.timestamp = timeStamp()
             register[key] = count
         }
         else{
-            register[key] = 0
-            group.barcodes[rawBarcode] = Barcode(rawBarcode,timeStamp(),0)
+            register[key] = 1
+            group.barcodes[rawBarcode] = Barcode(rawBarcode,timeStamp(),1)
         }
     }
 
     private fun timeStamp(): String {
-        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} +  ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
     }
 }

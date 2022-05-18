@@ -11,13 +11,6 @@ import com.idir.codebarscanner.ui.theme.Green200
 import com.idir.codebarscanner.ui.theme.Green500
 
 
-@Composable
-fun CardAction(action: ActionsIcons,
-               onClick:VoidCallback){
-    IconButton(onClick = { onClick() }) {
-        Icon(imageVector = action.icon, contentDescription = stringResource(action.label))
-    }
-}
 
 @Composable
 fun ToggleAction(

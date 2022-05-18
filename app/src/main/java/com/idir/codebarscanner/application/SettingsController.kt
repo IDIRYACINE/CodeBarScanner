@@ -1,5 +1,6 @@
 package com.idir.codebarscanner.application
 
+import com.idir.codebarscanner.BuildConfig
 import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
@@ -83,6 +84,11 @@ class SettingsController : ViewModel() {
         }
     }
 
+
+    fun toggleClearSend(){
+        toggleBoolean(settings.clearSend)
+    }
+
     fun showEditPopup(property:MutableState<String>,title:Int){
         editableProperty = property
         popupCardState.title.value = title
@@ -147,6 +153,15 @@ class SettingsController : ViewModel() {
         else{
             googleBarcodeAnalyser.setManualMode()
         }
+
+    }
+
+
+    fun getAppVersion(): String {
+        return BuildConfig.VERSION_NAME
+    }
+
+    fun showOnPlayStore() {
 
     }
 

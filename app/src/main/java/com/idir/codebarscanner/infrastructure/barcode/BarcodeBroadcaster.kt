@@ -9,7 +9,6 @@ class BarcodeBroadcaster : IBarcodeBroadcaster {
 
     override fun notifyBarcode(rawBarcode: String) {
         onNotifyCommands.forEach { it.execute() }
-
         subscribers.forEach {
                 subscriber -> subscriber.notify(rawBarcode)
         }
@@ -17,7 +16,6 @@ class BarcodeBroadcaster : IBarcodeBroadcaster {
 
     override fun notifyBarcodes(rawBarcodes: List<String>) {
         onNotifyCommands.forEach { it.execute() }
-
         subscribers.forEach {
                 subscriber -> subscriber.notify(rawBarcodes)
         }

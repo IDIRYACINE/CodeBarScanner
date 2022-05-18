@@ -11,7 +11,7 @@ class CardPopupState(
 ) {
 
     val title = mutableStateOf(R.string.popup_add_title)
-    val value = mutableStateOf("")
+    var value = mutableStateOf("")
     val isOpen = mutableStateOf(open)
 
     var onConfirm = onConfirmCreate

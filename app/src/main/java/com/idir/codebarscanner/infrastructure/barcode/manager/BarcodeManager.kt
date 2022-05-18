@@ -3,6 +3,7 @@ package com.idir.codebarscanner.infrastructure.barcode.manager
 import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.runtime.snapshots.SnapshotStateMap
 import com.idir.codebarscanner.data.BarcodeGroup
 import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.infrastructure.StorageManager
@@ -21,7 +22,6 @@ class BarcodeManager : IBarcodeManager {
     private lateinit var barcodesRegister : MutableMap<String,Int>
     private lateinit var barcodes : MutableMap<String,BarcodeGroup>
     private lateinit var groups : SnapshotStateList<BarcodeGroup>
-
     private var editableGroup : BarcodeGroup? = null
 
     /* Actions Mode */
@@ -37,8 +37,16 @@ class BarcodeManager : IBarcodeManager {
 
         val tempList :SnapshotStateList<BarcodeGroup> = mutableStateListOf()
 
+        var tempGroup : BarcodeGroup
         barcodes.forEach{
-            tempList.add(BarcodeGroup(it.key,it.value.name,it.value.barcodes,it.value.isActive))
+
+            tempGroup = BarcodeGroup(it.key,it.value.name,
+                it.value.barcodes
+                ,it.value.isActive)
+            tempList.add(tempGroup)
+            if (tempGroup.isActive.value){
+                activeGroups.add(tempGroup)
+            }
         }
         groups = tempList
     }
@@ -58,6 +66,31 @@ class BarcodeManager : IBarcodeManager {
         )
 
         return Json.encodeToString(map)
+    }
+
+    override fun clearAll() {
+        groups.forEach {
+            it.barcodes.forEach{
+                    barcode-> register.remove(barcode.key)
+            }
+            it.barcodes.clear()
+        }
+    }
+
+    override fun clearActiveGroups() {
+        activeGroups.forEach {
+            it.barcodes.forEach{
+                barcode-> register.remove(barcode.key)
+            }
+            it.barcodes.clear()
+        }
+    }
+
+    override fun clearGroup(group: BarcodeGroup) {
+        group.barcodes.forEach{
+                barcode-> register.remove(barcode.key)
+        }
+        group.barcodes.clear()
     }
 
     override fun addGroup(groupName: String) {

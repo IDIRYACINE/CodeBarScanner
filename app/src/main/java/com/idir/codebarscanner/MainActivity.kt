@@ -15,15 +15,17 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.Blue
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.android.gms.ads.MobileAds
 import com.idir.codebarscanner.infrastructure.HttpManager
 import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.infrastructure.services.ServiceBroadcaster
+import com.idir.codebarscanner.ui.components.AdBanner
 import com.idir.codebarscanner.ui.components.BottomNavigationBar
 import com.idir.codebarscanner.ui.components.NavigationGraph
 import com.idir.codebarscanner.ui.theme.CodeBarScannerTheme
+import com.idir.codebarscanner.ui.theme.Green500
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -56,7 +58,10 @@ class MainActivity : ComponentActivity() {
             }
             return@Handler true
         }
-        Provider.initApp(this)
+
+        MobileAds.initialize(this) {}
+
+        Provider.initApp(this,handler)
         setContent {
             CodeBarScannerTheme {
                 App(handler)
@@ -86,6 +91,7 @@ class MainActivity : ComponentActivity() {
 fun App(handler: Handler) {
     val navController = rememberNavController()
     Scaffold(
+        topBar = { AdBanner() },
         bottomBar = { BottomNavigationBar(navController) }
     ){
             innerPadding ->  Box(modifier = Modifier.padding(innerPadding)) {
@@ -96,7 +102,7 @@ fun App(handler: Handler) {
 
 @Composable
 fun SplashScreen(){
-    Surface(color = Blue) {
+    Surface(color = Green500) {
         Text(text = "loading")
     }
 }

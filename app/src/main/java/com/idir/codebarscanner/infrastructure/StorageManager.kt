@@ -1,7 +1,6 @@
 package com.idir.codebarscanner.infrastructure
 
 import android.content.Context
-import android.util.Log
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.data.BarcodeGroup
 import com.idir.codebarscanner.data.Settings
@@ -32,7 +31,6 @@ class StorageManager {
                 out.write(content.toByteArray())
             }
             catch (exception : Exception){
-                Log.wtf("IDIRIDIR" , exception.stackTraceToString())
             }
         }
         else{
@@ -83,7 +81,6 @@ class StorageManager {
             )
 
         } catch (exception:Exception){
-            Log.wtf("IDIRIDR",exception.stackTraceToString())
             mapOf(
                 GROUPS_REGISTER_KEY to mutableMapOf<String,Int>(),
                 BARCODES_REGISTER_KEY to mutableMapOf<String,Int>(),
