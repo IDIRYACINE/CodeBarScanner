@@ -1,9 +1,9 @@
 package com.idir.codebarscanner.infrastructure.barcode.manager
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.snapshots.SnapshotStateMap
 import com.idir.codebarscanner.data.BarcodeGroup
 import com.idir.codebarscanner.infrastructure.Provider
 import com.idir.codebarscanner.infrastructure.StorageManager
@@ -70,28 +70,25 @@ class BarcodeManager : IBarcodeManager {
 
     override fun clearAll() {
         groups.forEach {
-            it.barcodes.forEach{
-                    barcode-> register.remove(barcode.key)
-            }
-            it.barcodes.clear()
+            clearGroup(it)
         }
     }
 
     override fun clearActiveGroups() {
         activeGroups.forEach {
-            it.barcodes.forEach{
-                barcode-> register.remove(barcode.key)
-            }
-            it.barcodes.clear()
+            clearGroup(it)
         }
     }
 
     override fun clearGroup(group: BarcodeGroup) {
-        group.barcodes.forEach{
-                barcode-> register.remove(barcode.key)
+        val iterator = group.barcodes.iterator()
+        while (iterator.hasNext()){
+            val barcode = iterator.next()
+            barcodeHelper.remove(barcode.value,group,iterator,true)
         }
-        group.barcodes.clear()
+
     }
+
 
     override fun addGroup(groupName: String) {
         groupHelper!!.add(groupName)
@@ -119,14 +116,12 @@ class BarcodeManager : IBarcodeManager {
     }
 
     override fun setGroupDuplicateMode(value: Boolean) {
-        if(groupHelper !=null){
-           groupHelper!!.unsubscribeFromBarcodeBroadcaster(Provider.barcodeBroadcaster)
-        }
+        groupHelper?.unsubscribeFromBarcodeBroadcaster(Provider.barcodeBroadcaster)
 
         val helper = if(value){
-            DuplicateGroupHelper(register,barcodes,groups,barcodeHelper)
+            DuplicateGroupHelper(register,barcodes,groups)
         } else{
-            GroupHelper(register,barcodes,groups,barcodeHelper)
+            GroupHelper(register,barcodes,groups)
         }
 
         groupHelper = helper
@@ -135,10 +130,14 @@ class BarcodeManager : IBarcodeManager {
 
     override fun setBarcodeDuplicateMode(value: Boolean) {
         barcodeHelper = if(value){
-            DuplicateBarcodeHelper(barcodesRegister,activeGroups,editableGroup)
+            Log.wtf("BarcodeMode" ,"Duplicate")
+             DuplicateBarcodeHelper(register,activeGroups)
         } else{
-            BarcodeHelper(barcodesRegister,activeGroups,editableGroup)
+            Log.wtf("BarcodeMode" ,"Normal")
+
+            BarcodeHelper(register,activeGroups)
         }
+        groupHelper!!.setBarcodeHelper(barcodeHelper)
     }
 
     override fun toggleGroup(group: BarcodeGroup,value: Boolean) {

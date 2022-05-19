@@ -6,13 +6,13 @@ import androidx.compose.runtime.MutableState
 import com.idir.codebarscanner.infrastructure.serializers.MutableStateSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.UseSerializers
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.encodeToJsonElement
+
 
 @Serializable
 data class Barcode (
+    val id : String,
     val value:String,
-    var timestamp : String,
+    var time : String,
     var count : Int
     )
 
@@ -20,9 +20,9 @@ data class Barcode (
 @Serializable
 data class BarcodeGroup(
     val id : String,
-    val name:MutableState<String> ,
+    val name:MutableState<String>,
     val barcodes:MutableMap<String,Barcode>,
-    val isActive : MutableState<Boolean>
+    val isActive : MutableState<Boolean>,
     )
 
 

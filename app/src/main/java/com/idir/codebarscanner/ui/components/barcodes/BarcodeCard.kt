@@ -1,9 +1,7 @@
 package com.idir.codebarscanner.ui.components.barcodes
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,10 +21,18 @@ fun BarcodeCard(barcode: Barcode){
         elevation = 10.dp
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(15.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
         ) {
-            Text(text = barcode.value)
-            Text(text = barcode.timestamp , color = Color.LightGray, fontWeight = FontWeight.ExtraLight)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                .fillMaxWidth()){
+                Text(text = barcode.value)
+                Text(text = barcode.count.toString())
+            }
+            Text(text = barcode.time , color = Color.LightGray, fontWeight = FontWeight.ExtraLight)
         }
     }
 }

@@ -20,7 +20,7 @@
     <string name="settings_scanDuplicateGroup">Duplicate Groups</string>
     <string name="settings_scanDuplicateGroup_description">Allow duplicating groups with the same name</string>
     <string name="settings_scanDuplicate">Duplicate barcodes</string>
-    <string name="settings_scanDuplicate_description">Scanning duplicate will increase it\'s count instead of registering a new one</string>
+    <string name="settings_scanDuplicate_description">Allow scanning duplicate barcodes</string>
     <string name="settings_scanManually">Scan manually</string>
     <string name="settings_scanManually_description">Avoid accidental scans</string>
     <string name="settings_scanContinuous">Continuous scanning</string>
@@ -49,7 +49,7 @@
 
     <!--  Files !-->
     <string name="file_settings">Settings.json</string>
-    <string name="file_groups">CodebarGroups.json</string>
+    <string name="file_groups">BarcodeGroups.json</string>
 
     <!-- BottomNavigationBar !-->
     <string name="home_item">Home</string>

@@ -43,8 +43,8 @@ object Provider {
 
         val tempManager = BarcodeManager()
         tempManager.load(context, storageManager)
-        tempManager.setBarcodeDuplicateMode(false)
         tempManager.setGroupDuplicateMode(false)
+        tempManager.setBarcodeDuplicateMode(false)
         barcodesManager = tempManager
 
         resourceLoader = ResourcesLoader(context)

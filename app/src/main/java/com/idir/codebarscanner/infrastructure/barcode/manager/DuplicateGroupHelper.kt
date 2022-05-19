@@ -12,37 +12,20 @@ class DuplicateGroupHelper (
     private val register:MutableMap<String,Int>,
     private val data:MutableMap<String, BarcodeGroup>,
     private val groups: SnapshotStateList<BarcodeGroup>,
-    private val barcodeHelper: IBarcodeHelper
-) : IBarcodeGroupHelper,IBarcodeSubscriber{
+) : IBarcodeGroupHelper(),IBarcodeSubscriber{
+
+    private lateinit var barcodeHelper: IBarcodeHelper
 
     override fun add(groupName: String) {
-
-        if (!register.containsKey(groupName)){
-            val group = BarcodeGroup(groupName,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
-            register[groupName] = 0
-            data[groupName] = group
-            groups.add(group)
-        }
-        else{
-            val groupId = groupName + register[groupName]
-            val group = BarcodeGroup(groupId,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
-
-            data[groupId] = group
-            groups.add(group)
-        }
-
+        val groupKey :String = timeStamp()
+        val group =  BarcodeGroup(groupKey,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
+        data[groupKey] =group
+        groups.add(group)
     }
 
-    override fun remove(groupEntry: BarcodeGroup) {
-        val count = register[groupEntry.id]!! - 1
-        register[groupEntry.id] = count
-
-        if(count < 0){
-            register.remove(groupEntry.id)
-        }
-
-        data.remove(groupEntry.id)
-        groups.remove(groupEntry)
+    override fun remove(group: BarcodeGroup) {
+            register.remove(group.id)
+            groups.remove(group)
     }
 
     override fun subscribeToBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster) {
@@ -51,6 +34,10 @@ class DuplicateGroupHelper (
 
     override fun unsubscribeFromBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster) {
         broadcaster.unsubscribeFromBarcodeStream(this)
+    }
+
+    override fun setBarcodeHelper(helper: IBarcodeHelper) {
+        barcodeHelper = helper
     }
 
     override fun getId(): String {

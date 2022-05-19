@@ -6,6 +6,7 @@ import androidx.compose.runtime.State
 import com.idir.codebarscanner.data.Barcode
 import com.idir.codebarscanner.data.BarcodeGroup
 import com.idir.codebarscanner.infrastructure.barcode.commands.ICommand
+import java.util.*
 
 interface ICameraAnalyser{
     fun setBarcodeAnalyser(analyser:ImageAnalysis.Analyzer,processor:IBarcodeAnalyser)
@@ -63,16 +64,40 @@ interface IBarcodeManager{
     fun clearGroup(group:BarcodeGroup)
 }
 
-interface  IBarcodeGroupHelper{
-    fun add(groupName: String)
-    fun remove(groupEntry: BarcodeGroup)
-    fun subscribeToBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster)
-    fun unsubscribeFromBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster)
+abstract class IBarcodeGroupHelper{
+    abstract fun add(groupName: String)
+
+    abstract fun remove(group: BarcodeGroup)
+
+    fun timeStamp(): String {
+        return "${Calendar.DAY_OF_MONTH}/${Calendar.MONTH}/${Calendar.YEAR} ${Calendar.HOUR_OF_DAY}:${Calendar.MINUTE}:${Calendar.SECOND} "
+    }
+
+    abstract fun subscribeToBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster)
+    abstract fun unsubscribeFromBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster)
+    abstract fun setBarcodeHelper(helper: IBarcodeHelper)
 }
 
 
-interface  IBarcodeHelper{
-    fun add(rawBarcode: String)
-    fun addAll(rawBarcodes: List<String>)
-    fun remove(barcode: Barcode,group: BarcodeGroup)
+abstract class IBarcodeHelper{
+    abstract fun add(rawBarcode: String)
+    abstract fun addAll(rawBarcodes: List<String>)
+
+    abstract fun remove(
+        barcode: Barcode,group: BarcodeGroup,iterator: MutableIterator<MutableMap.MutableEntry<String, Barcode>>,purge:Boolean = false ,)
+
+    fun getEntryKey(rawBarcode: String, groupId: String) : String{
+        return "${groupId}${rawBarcode}"
+    }
+
+    fun timeStamp(): String {
+        return System.currentTimeMillis().toString()
+    }
+    fun currentTime() : String{
+        val time = Calendar.getInstance()
+        val day = "${time.get(Calendar.DAY_OF_WEEK)}/${time.get(Calendar.DAY_OF_MONTH)}/${time.get(Calendar.YEAR)}"
+        val hour= "${time.get(Calendar.HOUR_OF_DAY)}:${time.get(Calendar.MINUTE)}:${time.get(Calendar.SECOND)}"
+
+        return "$day $hour"
+    }
 }

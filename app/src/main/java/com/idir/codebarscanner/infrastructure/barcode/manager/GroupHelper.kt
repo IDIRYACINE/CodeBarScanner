@@ -13,25 +13,21 @@ class GroupHelper (
     private val register:MutableMap<String,Int>,
     private val data:MutableMap<String,BarcodeGroup>,
     private val groups:SnapshotStateList<BarcodeGroup>,
-    private val  barcodeHelper: IBarcodeHelper
-) : IBarcodeGroupHelper , IBarcodeSubscriber{
+) : IBarcodeGroupHelper() , IBarcodeSubscriber{
 
-    override fun remove(groupEntry: BarcodeGroup){
-        data.remove(groupEntry.id)
-        register.remove(groupEntry.id)
-        groups.remove(groupEntry)
-    }
+    private lateinit var barcodeHelper: IBarcodeHelper
 
-    override fun add(groupName: String){
+    override fun add(groupName: String) {
         if (!register.containsKey(groupName)){
-            register[groupName] = 0
             val group = BarcodeGroup(groupName,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
             data[groupName] = group
             groups.add(group)
-        }else{
-            val count = register[groupName]!! + 1
-            register[groupName] = count
         }
+    }
+
+    override fun remove(group: BarcodeGroup) {
+        register.remove(group.id)
+        groups.remove(group)
     }
 
     override fun subscribeToBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster) {
@@ -40,6 +36,10 @@ class GroupHelper (
 
     override fun unsubscribeFromBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster) {
         broadcaster.unsubscribeFromBarcodeStream(this)
+    }
+
+    override fun setBarcodeHelper(helper: IBarcodeHelper) {
+        barcodeHelper = helper
     }
 
     override fun getId(): String {
