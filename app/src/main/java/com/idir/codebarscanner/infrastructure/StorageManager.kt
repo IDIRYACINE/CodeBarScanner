@@ -67,8 +67,10 @@ class StorageManager {
             val inputStream =  FileInputStream(directory)
             val json : Map<String,JsonElement> = Json.decodeFromStream(inputStream)
 
-            val registerSerializer =MapSerializer(String.serializer(),Int.serializer())
-            val register: Map<String, Int> = decodeFromJsonElement(  registerSerializer ,json[GROUPS_REGISTER_KEY]!!)
+            val registerSerializer =MapSerializer(String.serializer(),
+                MapSerializer(String.serializer(),Int.serializer())
+            )
+            val register: Map<String, Map<String,Int>> = decodeFromJsonElement(  registerSerializer ,json[GROUPS_REGISTER_KEY]!!)
             val barcodeRegister = decodeFromJsonElement(registerSerializer,json[BARCODES_REGISTER_KEY]!!)
 
             val groupSerializer = MapSerializer(String.serializer(),BarcodeGroup.serializer())

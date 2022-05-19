@@ -84,7 +84,7 @@ abstract class IBarcodeHelper{
     abstract fun addAll(rawBarcodes: List<String>)
 
     abstract fun remove(
-        barcode: Barcode,group: BarcodeGroup,iterator: MutableIterator<MutableMap.MutableEntry<String, Barcode>>,purge:Boolean = false ,)
+        barcode: Barcode,group: BarcodeGroup,iterator: MutableIterator<MutableMap.MutableEntry<String, Barcode>>)
 
     fun getEntryKey(rawBarcode: String, groupId: String) : String{
         return "${groupId}${rawBarcode}"

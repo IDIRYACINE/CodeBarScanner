@@ -1,7 +1,6 @@
 package com.idir.codebarscanner.infrastructure.barcode.manager
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.idir.codebarscanner.data.BarcodeGroup
@@ -18,7 +17,7 @@ import kotlinx.serialization.json.encodeToJsonElement
 class BarcodeManager : IBarcodeManager {
 
     /* Data Structures */
-    private lateinit var register:MutableMap<String,Int>
+    private lateinit var register:MutableMap<String,MutableMap<String,Int>>
     private lateinit var barcodesRegister : MutableMap<String,Int>
     private lateinit var barcodes : MutableMap<String,BarcodeGroup>
     private lateinit var groups : SnapshotStateList<BarcodeGroup>
@@ -31,7 +30,7 @@ class BarcodeManager : IBarcodeManager {
 
     fun load(context: Context,storageManager: StorageManager) {
         val map = storageManager.loadBarcode(context)
-        register = map[StorageManager.GROUPS_REGISTER_KEY] as MutableMap<String, Int>
+        register = map[StorageManager.GROUPS_REGISTER_KEY] as MutableMap<String, MutableMap<String,Int>>
         barcodes = map[StorageManager.GROUPS_KEY] as MutableMap<String, BarcodeGroup>
         barcodesRegister = map[StorageManager.BARCODES_REGISTER_KEY] as MutableMap<String, Int>
 
@@ -64,7 +63,6 @@ class BarcodeManager : IBarcodeManager {
         val map = mapOf(
             StorageManager.GROUPS_KEY to activeGroups
         )
-
         return Json.encodeToString(map)
     }
 
@@ -81,12 +79,8 @@ class BarcodeManager : IBarcodeManager {
     }
 
     override fun clearGroup(group: BarcodeGroup) {
-        val iterator = group.barcodes.iterator()
-        while (iterator.hasNext()){
-            val barcode = iterator.next()
-            barcodeHelper.remove(barcode.value,group,iterator,true)
-        }
-
+        register[group.id]?.clear()
+        group.barcodes.clear()
     }
 
 
@@ -99,6 +93,7 @@ class BarcodeManager : IBarcodeManager {
     }
 
     override fun removeGroup(groupEntry: BarcodeGroup) {
+        activeGroups.remove(groupEntry)
         groupHelper!!.remove(groupEntry)
     }
 
@@ -130,11 +125,8 @@ class BarcodeManager : IBarcodeManager {
 
     override fun setBarcodeDuplicateMode(value: Boolean) {
         barcodeHelper = if(value){
-            Log.wtf("BarcodeMode" ,"Duplicate")
              DuplicateBarcodeHelper(register,activeGroups)
         } else{
-            Log.wtf("BarcodeMode" ,"Normal")
-
             BarcodeHelper(register,activeGroups)
         }
         groupHelper!!.setBarcodeHelper(barcodeHelper)

@@ -9,7 +9,7 @@ import com.idir.codebarscanner.infrastructure.barcode.IBarcodeHelper
 import com.idir.codebarscanner.infrastructure.barcode.IBarcodeSubscriber
 
 class DuplicateGroupHelper (
-    private val register:MutableMap<String,Int>,
+    private val register:MutableMap<String,MutableMap<String,Int>>,
     private val data:MutableMap<String, BarcodeGroup>,
     private val groups: SnapshotStateList<BarcodeGroup>,
 ) : IBarcodeGroupHelper(),IBarcodeSubscriber{
@@ -20,7 +20,12 @@ class DuplicateGroupHelper (
         val groupKey :String = timeStamp()
         val group =  BarcodeGroup(groupKey,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
         data[groupKey] =group
+
+        if(!register.containsKey(groupKey)){
+            register[groupKey] = mutableMapOf()
+        }
         groups.add(group)
+
     }
 
     override fun remove(group: BarcodeGroup) {

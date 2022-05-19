@@ -10,7 +10,7 @@ import com.idir.codebarscanner.infrastructure.barcode.IBarcodeSubscriber
 
 
 class GroupHelper (
-    private val register:MutableMap<String,Int>,
+    private val register:MutableMap<String,MutableMap<String,Int>>,
     private val data:MutableMap<String,BarcodeGroup>,
     private val groups:SnapshotStateList<BarcodeGroup>,
 ) : IBarcodeGroupHelper() , IBarcodeSubscriber{
@@ -21,6 +21,7 @@ class GroupHelper (
         if (!register.containsKey(groupName)){
             val group = BarcodeGroup(groupName,mutableStateOf(groupName), mutableMapOf(), mutableStateOf(false))
             data[groupName] = group
+            register[groupName] = mutableMapOf()
             groups.add(group)
         }
     }
@@ -28,6 +29,7 @@ class GroupHelper (
     override fun remove(group: BarcodeGroup) {
         register.remove(group.id)
         groups.remove(group)
+
     }
 
     override fun subscribeToBarcodeBroadcaster(broadcaster: IBarcodeBroadcaster) {
