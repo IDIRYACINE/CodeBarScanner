@@ -15,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -60,7 +61,7 @@ fun BottomNavigationBar (navController : NavController){
                 selected = currentRoute == item.screen_route,
                 icon = {
                     Icon(
-                        item.icon, contentDescription = item.screen_route)
+                        painterResource(id = item.icon), contentDescription = item.screen_route)
                 },
                 label = { Text(text = stringResource(id = item.title), fontSize = 9.sp) },
                 selectedContentColor = Color.White,
@@ -84,8 +85,8 @@ fun BottomNavigationBar (navController : NavController){
     }
 }
 
-sealed class BottomNavItem(@StringRes var title:Int, var icon: ImageVector, var screen_route:String){
-    object Home : BottomNavItem(R.string.home_item , Icons.Sharp.Home , "home")
-    object Scan : BottomNavItem(R.string.scan_item , Icons.Sharp.Place,"scan")
-    object Settings : BottomNavItem(R.string.settings_item , Icons.Sharp.Settings,"settings")
+sealed class BottomNavItem(@StringRes var title:Int, var icon: Int, var screen_route:String){
+    object Home : BottomNavItem(R.string.home_item , R.drawable.ic_home , "home")
+    object Scan : BottomNavItem(R.string.scan_item , R.drawable.ic_crop,"scan")
+    object Settings : BottomNavItem(R.string.settings_item , R.drawable.ic_settings,"settings")
 }

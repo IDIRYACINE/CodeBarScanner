@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
@@ -36,10 +35,10 @@ class MainActivity : ComponentActivity() {
     private lateinit var handler :Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
         setContent {
-           SplashScreen()
+            SplashScreen()
         }
+        super.onCreate(savedInstanceState)
         initApp()
 
     }
@@ -103,7 +102,6 @@ fun App(handler: Handler) {
 @Composable
 fun SplashScreen(){
     Surface(color = Green500) {
-        Text(text = "loading")
     }
 }
 

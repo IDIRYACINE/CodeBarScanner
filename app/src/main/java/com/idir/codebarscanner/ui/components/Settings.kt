@@ -65,19 +65,23 @@ fun SettingSectionHeader(title:Int,
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = padding.dp),
-        horizontalArrangement = Arrangement.Start
+            .padding(padding.dp),
+        horizontalArrangement = Arrangement.Center
     ){
 
-        Box(modifier = Modifier.weight(2f)) {}
+        Box(modifier = Modifier.weight(2f)) {
+        }
+
 
         Text(
-            modifier= Modifier.weight(8f),
-            text = stringResource(id = title),
-            color = colorResource(id = R.color.settings_section))
+                modifier= Modifier.weight(8f),
+                text = stringResource(id = title),
+                color = colorResource(id = R.color.settings_section))
 
-        Box(modifier = Modifier.weight(2f)){}
+
+        Box(modifier = Modifier.weight(2f)){
+
+        }
 
     }
-
 }

@@ -1,33 +1,34 @@
 package com.idir.codebarscanner.ui.components
 
+import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.*
+import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
+import androidx.compose.ui.window.PopupProperties
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.HomeController
 import com.idir.codebarscanner.data.BarcodeGroup
 import com.idir.codebarscanner.infrastructure.Provider
-
 
 @Composable
 fun ActionsDrop(controller:HomeController){
         fun hideActionsDrop(){
             controller.visibleActions.value = false
         }
-    Card(
-        elevation = 5.dp,
-        modifier = Modifier.padding(15.dp)
-    ){
-        Column{
-        IconButton(
-            modifier = Modifier.background(Color.White),
+        DropdownMenuItem(
             onClick = {
                 controller.popupCardState.setCreateState()
                 controller.showPopupCard()
@@ -36,26 +37,22 @@ fun ActionsDrop(controller:HomeController){
         ) {
             Text(Provider.resourceLoader.loadStringResource(R.string.button_new))
         }
-        IconButton(
-            modifier = Modifier.background(Color.White),
+
+        DropdownMenuItem(
             onClick = {
                 controller.clearAll()
                 hideActionsDrop()
-            }
-        ) {
+            })
+        {
             Text(Provider.resourceLoader.loadStringResource(R.string.button_clear_all))
         }
-        IconButton(
-            modifier = Modifier.background(Color.White),
+        DropdownMenuItem(
             onClick = {
                 controller.sendData()
-                hideActionsDrop()
-            }
-        ) {
+                hideActionsDrop() })
+        {
             Text(Provider.resourceLoader.loadStringResource(R.string.button_send))
         }
-    }
-    }
 
 }
 
@@ -64,7 +61,6 @@ fun ActionsGroupDrop(controller: HomeController,barcodeGroup: BarcodeGroup){
     fun hideActionsDrop(){
         controller.visibleGroupAction.value = false
     }
-
         DropdownMenuItem(
             onClick = {
                 controller.setEditGroup(barcodeGroup)
@@ -154,7 +150,7 @@ internal data class DropupMenuPositionProvider(
 
         onPositionCalculated(
             anchorBounds,
-            IntRect(x, y, x + popupContentSize.width, y + popupContentSize.height)
+            IntRect(x, y, x + popupContentSize.width, y - popupContentSize.height)
         )
         return IntOffset(x, y)
     }

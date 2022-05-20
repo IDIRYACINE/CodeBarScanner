@@ -22,8 +22,10 @@
         <entry key="app/src/main/res/drawable-v24/baseline_flash_on_24.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable/cog_drawable.xml" value="0.356" />
+        <entry key="app/src/main/res/drawable/ic_crop.xml" value="0.1895" />
         <entry key="app/src/main/res/drawable/ic_flash.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable/ic_hand.xml" value="0.2745" />
+        <entry key="app/src/main/res/drawable/ic_home.xml" value="0.1895" />
         <entry key="app/src/main/res/drawable/ic_launcher.xml" value="0.2045" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable/ic_qra_launcher.xml" value="0.2045" />
@@ -31,6 +33,7 @@
         <entry key="app/src/main/res/drawable/ic_repeat_barcode.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable/ic_repeat_group.xml" value="0.2745" />
         <entry key="app/src/main/res/drawable/ic_sound.xml" value="0.2745" />
+        <entry key="app/src/main/res/drawable/settings-48px.xml" value="0.1895" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2045" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.2045" />
       </map>

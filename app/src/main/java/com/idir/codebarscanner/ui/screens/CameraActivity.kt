@@ -38,12 +38,17 @@ fun CameraScreen(){
     }else{
         Toast.makeText(context, permissionFailedMessage, Toast.LENGTH_SHORT).show()
 
-        Button(onClick = {
-            cameraPermissionState.launchPermissionRequest()
+        Box(contentAlignment = Alignment.Center)
+        {
+            Button(
+                onClick = {
+                    cameraPermissionState.launchPermissionRequest()
 
-        },
-        content = {Text("Request Permissions")}
-        )
+                },
+                content = {Text("Request Permissions")}
+            )
+        }
+
     }
 
 }
