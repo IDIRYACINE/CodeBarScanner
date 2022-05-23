@@ -19,7 +19,6 @@ class HomeController(private val barcodesManager: IBarcodeManager, private val h
 
     val visibleActions : MutableState<Boolean> = mutableStateOf(false)
 
-    val visibleGroupAction : MutableState<Boolean> = mutableStateOf(false)
 
 
     init {
@@ -77,10 +76,6 @@ class HomeController(private val barcodesManager: IBarcodeManager, private val h
 
     fun clearGroup(group: BarcodeGroup) {
         barcodesManager.clearGroup(group)
-    }
-
-    fun toggleGroupActions() {
-        visibleGroupAction.value = !visibleGroupAction.value
     }
 
 
