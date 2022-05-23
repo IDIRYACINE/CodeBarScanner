@@ -1,8 +1,10 @@
 package com.idir.codebarscanner.ui.screens
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
@@ -15,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import com.idir.codebarscanner.App
 import com.idir.codebarscanner.R
 import com.idir.codebarscanner.application.SettingsController
 import com.idir.codebarscanner.data.Settings
@@ -149,13 +153,17 @@ fun ScanControlsSection(settings: Settings,controller:SettingsController){
 
 @Composable
 fun AboutSection(controller:SettingsController){
+    val context =  App.appInstance.applicationContext
     Divider(color= Color.LightGray, thickness = SettingsScreenConstants.dividerThickness)
     SettingSectionHeader(title = R.string.settings_section_about, padding = SettingsScreenConstants.sectionTitleTopPadding)
 
     SettingRow(
         title = controller.loadStringResource(R.string.settings_version),
         description = controller.getAppVersion(),
-        onClick = {},
-        actionComposable = { controller.showOnPlayStore()},
+        onClick = {
+            controller.showOnPlayStore(context)
+
+        },
+        actionComposable = {},
     )
 }

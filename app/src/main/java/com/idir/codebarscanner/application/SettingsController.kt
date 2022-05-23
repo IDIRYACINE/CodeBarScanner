@@ -1,9 +1,13 @@
 package com.idir.codebarscanner.application
 
-import com.idir.codebarscanner.BuildConfig
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.runtime.MutableState
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
+import com.idir.codebarscanner.BuildConfig
 import com.idir.codebarscanner.data.CardPopupState
 import com.idir.codebarscanner.data.Settings
 import com.idir.codebarscanner.infrastructure.Provider
@@ -161,9 +165,30 @@ class SettingsController : ViewModel() {
         return BuildConfig.VERSION_NAME
     }
 
-    fun showOnPlayStore() {
+    fun showOnPlayStore(context: Context) {
+        val packageName =  "com.idir.codebarscanner"
+        try {
+            ContextCompat.startActivity(
+                context,
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$packageName")
+                ),
+                null
+            )
+        } catch (e: ActivityNotFoundException) {
+            ContextCompat.startActivity(
+                context,
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                ),
+                null
+            )
+        }
 
     }
+
 
 
 }
